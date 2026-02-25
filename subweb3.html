@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI视频工具详情</title>
+    <link rel="icon" href="images/zhinanzhen.svg" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .tool-card {
+                flex-direction: row;
+            }
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-image {
+            flex: 0 0 250px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f5f9;
+        }
+
+        .tool-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .tool-card:hover .tool-image img {
+            transform: scale(1.03);
+        }
+
+        .tool-content {
+            flex: 1;
+            padding: 1.5rem;
+        }
+
+        .tool-title {
+            font-size: 1.8rem;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .tool-description {
+            font-size: 1.1rem;
+            color: #4b5563;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .tool-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-tag {
+            background-color: #eff6ff;
+            color: #1d4ed8;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .use-case {
+            font-style: italic;
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .tool-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(59, 130, 246, 0.3);
+        }
+
+        .tool-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
+        }
+
+        .footer {
+            background-color: #1e293b;
+            color: #cbd5e1;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #60a5fa;
+        }
+
+        .copyright {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
+            margin: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>AI视频工具详情</h1>
+        <div class="nav-links">
+            <a href="index.htm">返回首页</a>
+            <a href="subweb1.html">热门推荐</a>
+            <a href="subweb2.html">AI办公工具</a>
+            <a href="#video">AI视频工具</a>
+            <a href="subweb4.html">AI搜索引擎</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">精选AI视频创作工具</h2>
+
+        <div class="tool-card">
+            <div class="tool-image">
+                <a href="https://zenvideo.qq.com" target="_blank">
+                    <img src="images/zenvideo.svg" alt="腾讯智影">
+                </a>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">腾讯智影</h3>
+                <p class="tool-description">
+                    腾讯出品的AI数字人视频创作平台，支持一键生成AI主播、虚拟人直播。提供海量数字人形象、语音合成、自动剪辑、字幕生成、特效模板等功能。
+                </p>
+                <div class="tool-features">
+                    <span class="feature-tag">数字人形象</span>
+                    <span class="feature-tag">语音合成</span>
+                    <span class="feature-tag">自动剪辑</span>
+                    <span class="feature-tag">字幕生成</span>
+                    <span class="feature-tag">特效模板</span>
+                </div>
+                <p class="use-case">
+                    广泛用于短视频带货、新闻播报、企业宣传、在线教育等领域。
+                </p>
+                <a href="https://zenvideo.qq.com" target="_blank" class="tool-link">立即使用</a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="tool-card">
+            <div class="tool-image">
+                <a href="https://aigc.baidu.com" target="_blank">
+                    <img src="/images/dujia.png" alt="度加创作">
+                </a>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">度加创作</h3>
+                <p class="tool-description">
+                    百度推出的AI视频生成与剪辑平台，集成文生视频、图生视频、数字人等技术。支持上传素材自动剪辑、智能配音、字幕动画、特效添加，一键成片。
+                </p>
+                <div class="tool-features">
+                    <span class="feature-tag">文生视频</span>
+                    <span class="feature-tag">图生视频</span>
+                    <span class="feature-tag">智能配音</span>
+                    <span class="feature-tag">字幕动画</span>
+                    <span class="feature-tag">一键成片</span>
+                </div>
+                <p class="use-case">
+                    适合自媒体创作者、企业营销团队快速生产高质量短视频。
+                </p>
+                <a href="https://aigc.baidu.com" target="_blank" class="tool-link">立即使用</a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="tool-card">
+            <div class="tool-image">
+                <a href="https://hunyuan.tencent.com" target="_blank">
+                    <img src="/images/feiying.png" alt="飞影数字人">
+                </a>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">飞影数字人</h3>
+                <p class="tool-description">
+                    国内领先的AI虚拟人实时驱动平台，支持3D数字人建模、表情同步、语音驱动。可接入直播间实现24小时不间断智能客服、带货主播、虚拟讲解员。
+                </p>
+                <div class="tool-features">
+                    <span class="feature-tag">3D数字人建模</span>
+                    <span class="feature-tag">表情同步</span>
+                    <span class="feature-tag">语音驱动</span>
+                    <span class="feature-tag">实时直播</span>
+                    <span class="feature-tag">智能客服</span>
+                </div>
+                <p class="use-case">
+                    适用于电商直播、虚拟偶像、智慧展厅、在线客服等场景。
+                </p>
+                <a href="https://hunyuan.tencent.com" target="_blank" class="tool-link">立即使用</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="mailto:zxqs1014@163.com?subject=Hello%20again">联系我们</a>
+                <a href="">版权所有</a>
+                <a href="helpcenter.html">帮助中心</a>
+                <a href="">隐私政策</a>
+            </div>
+            <div class="copyright">
+                Copyright &copy;鲁ICP备202431216081&nbsp;鲁公安备110202431216081
+            </div>
+        </div>
+    </div>
+    <script>
+        function showWelcomeMessage() {
+            // 1. 创建一个 Date 对象，获取当前时间
+            var now = new Date();
+            // 2. 获取当前的小时数 (0-23)
+            var hour = now.getHours();
+
+            var greetingText = "";
+
+            // 3. 根据小时数判断时间段
+            if (hour < 6) {
+                greetingText = "夜深了，注意休息";
+            } else if (hour < 12) {
+                greetingText = "上午好，开启高效创作";
+            } else if (hour < 18) {
+                greetingText = "下午好，继续加油";
+            } else {
+                greetingText = "晚上好，享受创作乐趣";
+            }
+
+            // 4. 将问候语插入到页面标题的下方
+            // 获取 header 元素
+            var header = document.querySelector('.header');
+            // 创建一个新的 p 标签
+            var p = document.createElement('p');
+            p.style.fontSize = "1.2rem";
+            p.style.marginTop = "0.5rem";
+            p.style.opacity = "0.9";
+            p.innerText = "📅 " + now.toLocaleDateString() + " | " + greetingText;
+
+            // 将新元素添加到标题中
+            header.appendChild(p);
+        }
+        function addRandomButton() {
+            // 1. 定义一个工具对象数组 (将网页上的数据结构化存储)
+            var toolsData = [
+                { name: "腾讯智影", link: "https://zenvideo.qq.com" },
+                { name: "度加创作", link: "https://aigc.baidu.com" },
+                { name: "飞影数字人", link: "https://hunyuan.tencent.com" }
+            ];
+            var btn = document.createElement('button');
+            btn.innerText = "🎲 纠结用哪个？点我随机推荐";
+            // 给按钮添加一点样式
+            btn.style.display = "block";
+            btn.style.margin = "0 auto 2rem auto";
+            btn.style.padding = "10px 20px";
+            btn.style.fontSize = "1rem";
+            btn.style.backgroundColor = "#3b82f6";
+            btn.style.color = "white";
+            btn.style.border = "none";
+            btn.style.borderRadius = "20px";
+            btn.style.cursor = "pointer";
+            btn.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
+            btn.onclick = function () {
+                // Math.random() 生成 0-1 之间的随机小数
+                // 乘以数组长度，再用 Math.floor() 向下取整，得到随机索引
+                var randomIndex = Math.floor(Math.random() * toolsData.length);
+
+                // 获取选中的对象
+                var selectedTool = toolsData[randomIndex];
+
+                // 弹窗提示
+                var confirmGo = confirm("为您推荐神奇的 AI 工具：【" + selectedTool.name + "】\n\n点击“确定”立即前往体验！");
+
+                // 如果用户点击确定，跳转链接
+                if (confirmGo) {
+                    window.open(selectedTool.link, '_blank');
+                }
+            };
+            var container = document.querySelector('.container');
+            container.insertBefore(btn, container.firstChild);
+        }
+        function autoUpdateYear() {
+            var currentYear = new Date().getFullYear();
+            var copyrightDiv = document.querySelector('.copyright');
+            copyrightDiv.innerHTML = "当前年份: " + currentYear + " | " + copyrightDiv.innerHTML;
+        }
+        window.onload = function () {
+            showWelcomeMessage();
+            addRandomButton();
+            autoUpdateYear();
+        };
+    </script>
+</body>
+
+</html>

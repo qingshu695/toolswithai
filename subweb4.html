@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI搜索引擎详情 - AI工具导航</title>
+    <link rel="icon" href="images/zhinanzhen.svg" type="image/png">
+    <style>
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        /* 提示框样式 */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            padding: 0.75rem 1.5rem;
+            background: #1e293b;
+            color: white;
+            border-radius: 8px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* 头部样式 */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+        .header.scrolled {
+            padding: 1rem 0;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) fixed;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .nav a {
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .nav a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* 主要内容区域 */
+        .container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        
+        .search-engine-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #f0f4f9;
+            
+        }
+
+        @media (min-width: 768px) {
+            .search-engine-card {
+                flex-direction: row;
+            }
+            .card-image {
+                flex: 0 0 280px;
+            }
+        }
+        
+        .search-engine-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-image {
+            flex: 0 0 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background: #f8fafc;
+            position: relative;
+        }
+
+        .card-image-skeleton {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .card-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        .card-image img.loaded {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .card-image img.error {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.44 8.59L12 15.17l-2.55-2.58L8 14l4 4 4-4-1.46-1.41zm0-5.65L12 9.17l-2.55-2.58L8 8l4 4 4-4-1.46-1.41z'/%3E%3C/svg%3E");
+            background: #f1f5f9;
+            padding: 20px;
+            width: 100px;
+            height: 100px;
+        }
+        
+        .card-content {
+            flex: 1;
+            padding: 1.8rem;
+        }
+
+        .card-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 20px;
+            margin-bottom: 0.8rem;
+        }
+        
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: #1e40af;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .card-description {
+            color: #4b5563;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            max-height: 80px;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .card-description.expanded {
+            max-height: 300px;
+        }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .card-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(59, 130, 246, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .card-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
+        }
+
+        .favorite-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .favorite-btn:hover {
+            background: #f1f5f9;
+            color: #2563eb;
+        }
+
+        .favorite-btn.active {
+            background: #eff6ff;
+            color: #2563eb;
+            border-color: #bfdbfe;
+        }
+
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #f1f5f9;
+            color: #2563eb;
+        }
+
+        .toggle-desc {
+            color: #3b82f6;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .toggle-desc:hover {
+            color: #1e40af;
+            text-decoration: underline;
+        }
+        
+        /* 页脚样式 */
+        .footer {
+            background: #1e293b;
+            color: #cbd5e1;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d1d5db, transparent);
+            margin: 2rem 0;
+        }
+
+        /* ==================== 新增收藏侧边栏样式 ==================== */
+        
+        /* 悬浮收藏切换按钮 */
+        .sidebar-toggle {
+            position: fixed;
+            right: 20px;
+            bottom: 30px;
+            width: 60px;
+            height: 60px;
+            background: #2563eb;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+            z-index: 1001;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .sidebar-toggle:hover {
+            transform: scale(1.1) rotate(10deg);
+            background: #1e40af;
+        }
+
+        .sidebar-toggle .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #ef4444;
+            color: white;
+            font-size: 12px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+
+        /* 侧边栏本体 */
+        .favorites-sidebar {
+            position: fixed;
+            top: 0;
+            right: -350px; /* 初始隐藏 */
+            width: 320px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+            z-index: 1002;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .favorites-sidebar.active {
+            right: 0;
+        }
+
+        /* 遮罩层 */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(2px);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+        }
+
+        .sidebar-header h3 {
+            color: #1e293b;
+            font-size: 1.25rem;
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        /* 侧边栏内单条收藏样式 */
+        .fav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            background: #fff;
+            border: 1px solid #f1f5f9;
+            transition: all 0.2s ease;
+        }
+
+        .fav-item:hover {
+            background: #f8fafc;
+            border-color: #3b82f6;
+        }
+
+        .fav-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .fav-info {
+            flex: 1;
+        }
+
+        .fav-info h4 {
+            font-size: 0.95rem;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+
+        .fav-info a {
+            font-size: 0.8rem;
+            color: #3b82f6;
+        }
+
+        .del-fav {
+            color: #cbd5e1;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .del-fav:hover {
+            color: #ef4444;
+        }
+</style>
+</head>
+<>
+    <div class="toast" id="toast"></div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="favorites-sidebar" id="favoritesSidebar">
+        <div class="sidebar-header">
+            <h3>我的收藏</h3>
+            <button class="close-sidebar" id="closeSidebar">&times;</button>
+        </div>
+        <div class="sidebar-content" id="sidebarContent">
+            </div>
+    </div>
+    <div class="sidebar-toggle" id="sidebarToggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M3.612 15.443c-.387.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+        </svg>
+        <div class="badge" id="favBadge">0</div>
+    </div>
+    <header class="header" id="mainHeader">
+        <h1>AI搜索引擎详情</h1>
+        <nav class="nav">
+            <a href="index.htm">返回首页</a>
+            <a href="subweb1.html">热门推荐</a>
+            <a href="subweb2.html">AI办公工具</a>
+            <a href="subweb3.html">AI视频工具</a>
+            <a href="#bing">必应AI</a>
+            <a href="#quark">夸克AI</a>
+            <a href="#baidu">百度AI探索版</a>
+            <a href="#nami">纳米搜索</a>
+            <a href="#mita">秘塔搜索</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="search-engine-card" id="bing" data-id="bing">
+            <div class="card-image">
+                <div class="card-image-skeleton"></div>
+                <a href="https://www.bing.com" target="_blank">
+                    <img src="images/Bing.svg" alt="必应ai" class="tool-img">
+                </a>
+            </div>
+            <div class="card-content">
+                <span class="card-tag">热门推荐</span>
+                <h2 class="card-title">
+                    <span class="name">必应AI</span>
+                    <button class="favorite-btn" data-id="bing">
+                        收藏
+                    </button>
+                </h2>
+                <p class="card-description">
+                    微软推出的全球领先AI搜索引擎，集成GPT-4与DALL·E 3模型。支持自然语言对话搜索、实时生成图文答案、引用来源、创作文章与图像。
+                    <br><br>
+                    特别适合深度研究、学术查证、创意灵感获取，是ChatGPT之外的最佳AI搜索入口。支持多语言交互，实时整合全网信息，答案精准度行业领先。
+                </p>
+                <span class="toggle-desc" data-target="bing">查看更多</span>
+                <div class="card-actions">
+                    <a href="https://www.bing.com" target="_blank" class="card-button">立即使用</a>
+                    <button class="copy-btn" data-link="https://www.bing.com">
+                        复制链接
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="search-engine-card" id="quark" data-id="quark">
+            <div class="card-image">
+                <div class="card-image-skeleton"></div>
+                <a href="https://www.quark.cn" target="_blank">
+                    <img src="images/kuake.svg" alt="夸克AI" class="tool-img">
+                </a>
+            </div>
+            <div class="card-content">
+                <span class="card-tag">轻量高效</span>
+                <h2 class="card-title">
+                    <span class="name">夸克AI搜索</span>
+                    <button class="favorite-btn" data-id="quark">
+                        收藏
+                    </button>
+                </h2>
+                <p class="card-description">
+                    阿里旗下新一代AI搜索浏览器，深度融合大模型与搜索技术。支持一问多答、思维导图总结、文档对比、学习计划生成等智能功能。
+                    <br><br>
+                    专为学生、职场人士设计，助力高效学习与信息提炼。无广告干扰，体积轻巧，移动端体验极佳，支持离线缓存和智能错题本功能。
+                </p>
+                <span class="toggle-desc" data-target="quark">查看更多</span>
+                <div class="card-actions">
+                    <a href="https://www.quark.cn" target="_blank" class="card-button">立即使用</a>
+                    <button class="copy-btn" data-link="https://www.quark.cn">
+                        复制链接
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="search-engine-card" id="baidu" data-id="baidu">
+            <div class="card-image">
+                <div class="card-image-skeleton"></div>
+                <a href="https://think.baidu.com/" target="_blank">
+                    <img src="images/baidu.svg" alt="baiduai" class="tool-img">
+                </a>
+            </div>
+            <div class="card-content">
+                <span class="card-tag">技术导向</span>
+                <h2 class="card-title">
+                    <span class="name">百度AI探索版</span>
+                    <button class="favorite-btn" data-id="baidu">
+                        收藏
+                    </button>
+                </h2>
+                <p class="card-description">
+                    百度推出的实验性AI搜索产品，结合文心大模型与百度搜索生态。支持多轮复杂问答、实时热点解读、数据可视化、代码运行等高级能力。
+                    <br><br>
+                    适合技术开发者、数据分析师、时事评论员等专业用户。深度整合百度学术、百度文库资源，支持本地文档上传分析，代码调试功能覆盖多编程语言。
+                </p>
+                <span class="toggle-desc" data-target="baidu">查看更多</span>
+                <div class="card-actions">
+                    <a href="https://think.baidu.com/" target="_blank" class="card-button">立即使用</a>
+                    <button class="copy-btn" data-link="https://think.baidu.com/">
+                        复制链接
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="search-engine-card" id="nami" data-id="nami">
+            <div class="card-image">
+                <div class="card-image-skeleton"></div>
+                <a href="https://www.nano.org" target="_blank">
+                    <img src="images/nami.svg" alt="纳米搜索" class="tool-img">
+                </a>
+            </div>
+            <div class="card-content">
+                <span class="card-tag">隐私优先</span>
+                <h2 class="card-title">
+                    <span class="name">纳米搜索</span>
+                    <button class="favorite-btn" data-id="nami">
+                        收藏
+                    </button>
+                </h2>
+                <p class="card-description">
+                    国内新兴AI原生搜索引擎，专注"答案即服务"理念。输入问题直接给出结构化答案，支持表格、清单、对比分析等格式。
+                    <br><br>
+                    强调隐私保护、无广告干扰，适合追求高效、干净搜索体验的用户。无需登录即可使用核心功能，搜索结果无竞价排名，数据本地处理不上传。
+                </p>
+                <span class="toggle-desc" data-target="nami">查看更多</span>
+                <div class="card-actions">
+                    <a href="https://www.nano.org" target="_blank" class="card-button">立即使用</a>
+                    <button class="copy-btn" data-link="https://www.nano.org">
+                        复制链接
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="search-engine-card" id="mita" data-id="mita">
+            <div class="card-image">
+                <div class="card-image-skeleton"></div>
+                <a href="https://metaso.cn" target="_blank">
+                    <img src="images/mitaai.jpg" alt="秘塔搜索" class="tool-img">
+                </a>
+            </div>
+            <div class="card-content">
+                <span class="card-tag">学术专用</span>
+                <h2 class="card-title">
+                    <span class="name">秘塔搜索</span>
+                    <button class="favorite-btn" data-id="mita">
+                        收藏
+                    </button>
+                </h2>
+                <p class="card-description">
+                    专注学术与技术领域的AI搜索引擎，支持PDF论文直接对话。可上传文档提问、提取关键信息、生成文献综述、翻译外文资料。
+                    <br><br>
+                    深受科研人员、学生、工程师喜爱，是AI时代的"学术谷歌"。支持中英文文献互译，自动生成引用格式（APA/MLA/GB/T），整合知网/万方/维普等学术数据库。
+                </p>
+                <span class="toggle-desc" data-target="mita">查看更多</span>
+                <div class="card-actions">
+                    <a href="https://metaso.cn" target="_blank" class="card-button">立即使用</a>
+                    <button class="copy-btn" data-link="https://metaso.cn">
+                        复制链接
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links" style="display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem;">
+                <a href="mailto:zxqs1014@163.com" style="color: #cbd5e1;">联系我们</a>
+                <a href="#" style="color: #cbd5e1;">版权所有</a>
+                <a href="helpcenter.html" style="color: #cbd5e1;">帮助中心</a>
+                <a href="#" style="color: #cbd5e1;">隐私政策</a>
+            </div>
+            <div class="copyright" style="font-size: 0.9rem; color: #94a3b8;">
+                Copyright &copy;鲁ICP备216081&nbsp;鲁公安备110216081
+            </div>
+        </div>
+    </footer>
+    <script>
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId.startsWith('#') && targetId.length > 1) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+        const toggleButtons = document.querySelectorAll('.toggle-desc');
+        toggleButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-target');
+                const descElement = document.querySelector(`#${targetId} .card-description`);
+                
+                if (descElement.classList.contains('expanded')) {
+                    descElement.classList.remove('expanded');
+                    btn.textContent = '查看更多';
+                } else {
+                    descElement.classList.add('expanded');
+                    btn.textContent = '收起';
+                }
+            });
+        });
+
+        // ==================== 收藏逻辑与侧边栏控制 ====================
+
+        const favoriteButtons = document.querySelectorAll('.favorite-btn');
+        const sidebar = document.getElementById('favoritesSidebar');
+        const sidebarContent = document.getElementById('sidebarContent');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const favBadge = document.getElementById('favBadge');
+        function refreshSidebar() {
+            const favorites = JSON.parse(localStorage.getItem('aiToolFavorites') || '[]');
+            favBadge.textContent = favorites.length;
+            
+            if (favorites.length === 0) {
+                sidebarContent.innerHTML = '<div class="empty-state">还没有收藏任何工具哦</div>';
+                return;
+            }
+
+            let html = '';
+            favorites.forEach(id => {
+                const card = document.getElementById(id);
+                if (card) {
+                    const name = card.querySelector('.name').textContent;
+                    const img = card.querySelector('img').getAttribute('src');
+                    const link = card.querySelector('.card-button').getAttribute('href');
+                    
+                    html += `
+                        <div class="fav-item">
+                            <img src="${img}" alt="${name}">
+                            <div class="fav-info">
+                                <h4>${name}</h4>
+                                <a href="${link}" target="_blank">立即访问</a>
+                            </div>
+                            <div class="del-fav" onclick="removeFav('${id}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            sidebarContent.innerHTML = html;
+        }
+        window.removeFav = function(id) {
+            let favorites = JSON.parse(localStorage.getItem('aiToolFavorites') || '[]');
+            favorites = favorites.filter(favId => favId !== id);
+            localStorage.setItem('aiToolFavorites', JSON.stringify(favorites));
+            const btn = document.querySelector(`.favorite-btn[data-id="${id}"]`);
+            if (btn) {
+                btn.classList.remove('active');
+                btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg> 收藏`;
+            }
+            
+            refreshSidebar();
+            showToast('已取消收藏');
+        };
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+            if (sidebar.classList.contains('active')) {
+                refreshSidebar();
+            }
+        }
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        closeSidebar.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+        function initFavorites() {
+            const favorites = JSON.parse(localStorage.getItem('aiToolFavorites') || '[]');
+            favBadge.textContent = favorites.length;
+            favoriteButtons.forEach(btn => {
+                const toolId = btn.getAttribute('data-id');
+                if (favorites.includes(toolId)) {
+                    btn.classList.add('active');
+                    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg> 已收藏`;
+                }
+            });
+        }
+        favoriteButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const toolId = btn.getAttribute('data-id');
+                let favorites = JSON.parse(localStorage.getItem('aiToolFavorites') || '[]');
+                
+                if (favorites.includes(toolId)) {
+                    favorites = favorites.filter(id => id !== toolId);
+                    btn.classList.remove('active');
+                    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg> 收藏`;
+                    showToast('已取消收藏');
+                } else {
+                    favorites.push(toolId);
+                    btn.classList.add('active');
+                    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg> 已收藏`;
+                    showToast('收藏成功');
+                }
+                localStorage.setItem('aiToolFavorites', JSON.stringify(favorites));
+                favBadge.textContent = favorites.length;
+                refreshSidebar();
+            });
+        });
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        copyButtons.forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const link = btn.getAttribute('data-link');
+                try {
+                    await navigator.clipboard.writeText(link);
+                    showToast('链接复制成功');
+                } catch (err) {
+                    const input = document.createElement('input');
+                    input.value = link;
+                    document.body.appendChild(input);
+                    input.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(input);
+                    showToast('链接复制成功');
+                }
+            });
+        });
+
+        // 5. 提示框显示函数
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 2000);
+        }
+
+        // 6. 图片加载动画
+        const toolImages = document.querySelectorAll('.tool-img');
+        toolImages.forEach(img => {
+            const src = img.getAttribute('data-src');
+            if (src) img.src = src;
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+                img.parentElement.previousElementSibling.style.display = 'none';
+            });
+            img.addEventListener('error', () => {
+                img.classList.add('error');
+                img.parentElement.previousElementSibling.style.display = 'none';
+            });
+        });
+    </script>
+    
+</body>
+</html>

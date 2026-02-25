@@ -1,0 +1,2612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI导航罗盘 - 精选热门AI工具、办公、视频、搜索引擎，助力智能生活">
+    <meta name="keywords" content="AI工具,人工智能,AI导航,豆包,Kimi,文心一言,通义千问">
+    <title>AI导航罗盘 | 未来从这里开始</title>
+    <link rel="icon" href="images/zhinanzhen.svg" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* CSS变量定义 */
+        :root {
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --primary-color: #470b12;
+            --primary-color-hover: #6d121e;
+            --navbar-bg: rgba(255, 255, 255, 0.95);
+            --navbar-border: rgba(0, 0, 0, 0.05);
+            --card-bg: #fff;
+            --card-border: #e2e8f0;
+            --desc-text-color: #64748b;
+            --tag-bg: #f1f5f9;
+            --tag-text-color: #475569;
+            --tag-border: #e2e8f0;
+            --footer-bg: #fff;
+
+            --carousel-indicator-active: var(--primary-color);
+            --carousel-indicator-bg: rgba(255, 255, 255, 0.6);
+            --carousel-btn-bg: rgba(0, 0, 0, 0.4);
+            /* 搜索框变量 */
+            --search-box-bg: rgba(255, 255, 255, 0.95);
+            --search-box-shadow: none;
+            --search-box-focus-shadow:none;
+        }
+
+        /* 深色模式颜色优化 */
+.dark-mode {
+    --bg-color: #0f172a;        /* 深蓝灰背景，比纯黑更高级 */
+    --text-color: #f1f5f9;      /* 浅灰色文字 */
+    --primary-color: #ff4d6d;   /* 【关键】暗模式下调亮主色，否则看不清 */
+    --primary-color-hover: #ff758f;
+    --navbar-bg: rgba(15, 23, 42, 0.9);
+    --navbar-border: rgba(255, 255, 255, 0.1);
+    --card-bg: #1e293b;         /* 卡片背景略浅于底色，增加层级感 */
+    --card-border: #334155;
+    --desc-text-color: #94a3b8; /* 描述文字使用中灰色 */
+    --tag-bg: #334155;
+}
+
+        /* 全局重置样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        /* dialog 弹窗全局样式：新增 */
+        dialog {
+            margin: auto;
+            padding: 0;
+            border: none;
+            outline: none;
+        }
+
+        dialog::backdrop {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .dark-mode dialog::backdrop {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        /* 修复输入框聚焦样式 */
+        input:focus {
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 2px rgba(71, 11, 18, 0.1);
+        }
+
+        .dark-mode input:focus {
+            box-shadow: 0 0 0 2px rgba(251, 113, 133, 0.1);
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ========== 1. 顶部全局导航栏 ========== */
+        .global-navbar {
+            width: 100%;
+            height: 56px;
+            /* 更细的顶部栏 */
+            background: var(--navbar-bg);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-bottom: none;
+            /* 去掉边框 */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: none;
+            /* 去掉阴影，融入页面 */
+        }
+        .nav-news-btn {
+    /* 关键：垂直居中 + 调整间距 */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px; /* 与右侧图标按钮高度一致 */
+    margin: 0 12px; /* 左右间距，替代原有仅左间距 */
+    padding: 0 12px;
+    background: #ffffff;
+    color: #000000;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    gap: 6px;
+    transition: all 0.2s ease;
+    /* 确保按钮不被挤压 */
+    flex-shrink: 0;
+}
+
+.nav-news-btn i {
+    color: #ff4d4f; /* 火焰图标红色突出 */
+    font-size: 0.9rem;
+}
+
+.nav-news-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-1px);
+}
+
+/* 移动端适配（优化）：屏幕变小时先缩小文字，再隐藏 */
+@media (max-width: 768px) {
+    .nav-news-btn span {
+        font-size: 0.75rem; /* 先缩小文字 */
+    }
+    /* 屏幕更小时（如小于480px）再隐藏文字 */
+    @media (max-width: 480px) {
+        .nav-news-btn span {
+            display: none;
+        }
+        .nav-news-btn {
+            padding: 0 8px;
+            margin: 0 8px;
+        }
+    }
+}
+        .nav-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .right-actions {
+            margin-left: auto; 
+        }
+        /* AI热门资讯按钮样式 */
+.nav-news-btn {
+    margin-left: 15px; /* 与Logo保持间距 */
+    background: #ffffff;
+    color: #000000;
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+/* 新增：常用工具按钮样式 */
+.nav-freq-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    margin-left: 15px;
+    padding: 0 12px;
+    background: #ffffff;
+    color: #000000;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    gap: 6px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.nav-freq-btn i {
+    color: #f59e0b; /* 橙黄色的星星，区别于热门的红色 */
+    font-size: 0.9rem;
+}
+
+.nav-freq-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-1px);
+}
+
+/* 移动端适配：屏幕变小隐藏文字，只留图标 */
+@media (max-width: 768px) {
+    .nav-freq-btn span {
+        display: none;
+    }
+    .nav-freq-btn {
+        padding: 0 8px;
+        margin-left: 8px;
+    }
+}
+
+.nav-news-btn i {
+    color: #ff4d4f; /* 火焰图标给个红色，突出“热门” */
+    font-size: 1.1rem;
+}
+
+.nav-news-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-1px);
+}
+
+/* 移动端适配：手机上如果太挤，可以隐藏文字只留图标 */
+@media (max-width: 768px) {
+    .nav-news-btn span {
+        display: none;
+    }
+    .nav-news-btn {
+        padding: 8px;
+        margin-left: 8px;
+    }
+}
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 1.4rem;
+        }
+
+        .right-actions {
+            display: flex;
+            gap: 8px;
+            /* 缩小间距 */
+            align-items: center;
+            height: 100%;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            background: var(--tag-bg);
+            color: var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.14s ease;
+            font-size: 1rem;
+            box-shadow: none;
+        }
+
+        .icon-btn:hover {
+            background: #f3f4f6;
+            color: var(--primary-color);
+            transform: translateY(-1px);
+            box-shadow: none;
+        }
+
+        /* ========== 下拉菜单核心修复与优化 ========== */
+
+        .dropdown-wrapper {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 180px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.2s ease-in-out;
+            z-index: 2000;
+            overflow: visible;
+            padding: 6px 0;
+        }
+
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: transparent;
+        }
+
+        .dropdown-wrapper:hover .dropdown-menu,
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            transition: background 0.2s;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: var(--tag-bg);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .user-avatar-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            /*变成圆形*/
+            border: none;
+            overflow: hidden;
+            /* 裁剪多余部分 */
+            transition: all 0.18s ease;
+            position: relative;
+        }
+
+        .user-avatar-btn img {
+            width: 100%;
+            height: 100%;
+            /*强制图片撑满整个圆形容器*/
+            object-fit: cover;
+            /*浏览器保持图片的原始长宽比，同时填满容器，多余的部分会被裁剪，但不会拉伸*/
+        }
+
+        /*当你把鼠标移上去时，头像会有动态变化*/
+        .dropdown-wrapper:hover .user-avatar-btn {
+            transform: scale(1.03);
+            /*放大一点点*/
+            box-shadow: none;
+        }
+
+        .user-menu {
+            width: 260px;
+            padding-bottom: 8px;
+        }
+
+        .user-info-header {
+            padding: 20px;
+            background: linear-gradient(to right, var(--tag-bg), var(--card-bg));
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 8px;
+        }
+
+        .user-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin-bottom: 4px;
+        }
+
+        .user-level {
+            font-size: 0.75rem;
+            color: #fff;
+            background: var(--primary-color);
+            padding: 3px 10px;
+            border-radius: 99px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        .divider-line {
+            height: 1px;
+            background: var(--card-border);
+            margin: 8px 0;
+        }
+
+        .logout-item {
+            color: #ef4444;
+        }
+
+        .logout-item:hover {
+            background: #fef2f2;
+            color: #dc2626;
+            border-left-color: #dc2626;
+        }
+
+        .dark-mode .logout-item:hover {
+            background: rgba(220, 38, 38, 0.1);
+        }
+
+        .auth-btn {
+            padding: 8px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.18s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .login-btn {
+            color: var(--primary-color);
+            background: transparent;
+            border: 1px solid rgba(71, 11, 18, 0.06);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .login-btn:hover {
+            color: #fff;
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(71, 11, 18, 0.08);
+        }
+
+        .register-btn {
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-color-hover));
+            color: white;
+            padding: 10px 18px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(71, 11, 18, 0.12);
+            border: none;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 38px rgba(71, 11, 18, 0.16);
+        }
+
+        /* 顶部 logo 与登录/注册按钮：白底黑字样式 */
+        .global-navbar .logo {
+            background: #ffffff;
+            color: #000000;
+            padding: 6px 10px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            border: none;
+        }
+
+        .global-navbar .logo i {
+            color: #000000;
+            font-size: 1.1rem;
+        }
+
+        .global-navbar .auth-btn,
+        .global-navbar .login-btn,
+        .global-navbar .register-btn {
+            background: #ffffff;
+            color: #000000 !important;
+            border: none;
+            box-shadow: none;
+            padding: 4px 8px;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            height: auto;
+            line-height: 1;
+        }
+
+        .global-navbar .auth-btn:hover,
+        .global-navbar .login-btn:hover,
+        .global-navbar .register-btn:hover {
+            background: #f6f7f8;
+            color: #000000 !important;
+            transform: translateY(-1px);
+            box-shadow: none;
+        }
+
+        /* 缩小 Sign in 与 Sign up 之间的间距（在现有 gap 基础上减少约 4px） */
+        .global-navbar .login-btn {
+            margin-right: -4px;
+        }
+
+
+        /* ========== 2. 头部区域（简洁） ========== */
+        header {
+            position: relative;
+            color: var(--text-color);
+            text-align: center;
+            /* reduced vertical padding since subtitle/links gone */
+            padding: -20px 20px 40px;
+            margin-bottom: 0px;
+            overflow: hidden;
+        }
+
+        .header-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            z-index: -2;
+        }
+        header h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    letter-spacing: -1px;
+    
+    /* 修改这里：不再使用透明裁剪，直接引用主色变量 */
+    color: var(--primary-color); 
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+}
+        /* 副标题样式 */
+        .header-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text-color); /* 或者直接用 #64748b */
+            opacity: 0.8;
+            max-width: 700px;
+            margin: 15px auto 35px; /* 上边距15px，下边距35px */
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+    /* 适配移动端：屏幕变小时调小字号 */
+        @media (max-width: 768px) {
+            .header-subtitle {
+            font-size: 1rem;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+}
+        /* 站点标题自定义颜色（浅绿色），并移除阴影 */
+        .site-title {
+            color: #7ee7a6;
+            text-shadow: none;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 36px;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .modern-search-wrapper {
+            position: relative;
+            max-width: 550px;
+            margin: 0 auto 10px;
+            z-index: 2;
+        }
+
+
+        .modern-search-form {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 10px 6px 10px 12px;
+            box-shadow: var(--search-box-shadow);
+            border: 1px solid #cbd5e1;
+            transition: all 0.18s ease;
+        }
+
+        .modern-search-form:hover,
+        .modern-search-form:focus-within {
+            transform: none;
+            box-shadow: var(--search-box-focus-shadow);
+            border-color: rgba(71, 11, 18, 0.06);
+        }
+
+        /* 搜索下方的对话 AI 条 */
+        .chat-item {
+            background: linear-gradient(90deg, rgba(71, 11, 18, 0.04), rgba(71, 11, 18, 0.01));
+            border: 1px solid rgba(71, 11, 18, 0.06);
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.18s ease;
+            padding: 8px 12px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-item .icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--primary-color);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+
+        .chat-item:hover {
+            background: var(--primary-color);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(71, 11, 18, 0.12);
+        }
+
+        .chat-item:hover .icon {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .search-icon-left {
+            padding-left: 5px;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            pointer-events: none;
+        }
+
+        .modern-search-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 14px 8px;
+            font-size: 1.05rem;
+            color: var(--text-color);
+            outline: none;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .modern-search-input::placeholder {
+            color: var(--desc-text-color);
+            font-weight: 400;
+        }
+
+        .modern-search-btn {
+            background: whitesmoke;
+            color: black;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(71, 11, 18, 0.12);
+        }
+
+        .modern-search-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            list-style: none;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        nav a {
+            display: block;
+            padding: 12px 28px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        nav a:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: translateY(-4px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-shadow: none;
+        }
+
+        /* ========== 工具卡片样式 ========== */
+        .tools-section {
+            margin: 10px 0;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            position: relative;
+            padding-left: 16px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 4px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        /* 调整网格布局，缩小卡片宽度，实现一行多列的紧凑效果（左图右文样式） */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            /*align-items: start;*/
+        }
+
+        /* 卡片容器：强制左图右文布局，卡片更窄、间距更紧凑 */
+        .tool-card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            padding: 10px;
+            text-decoration: none;
+            transition: all 0.18s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            min-height: 56px;
+            flex-wrap: nowrap;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+            border-color: rgba(71, 11, 18, 0.08);
+        }
+
+        /* 左侧图标：统一尺寸，略带圆角（方便支持方形/圆形图标） */
+        .tool-card img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 0;
+            /* 我们使用 gap 控制间距 */
+            background: var(--bg-color);
+            border: none;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        /* 右侧文字容器：占据剩余宽度，允许换行 */
+        .tool-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* 标题保持单行显示并省略超长文本 */
+        .tool-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        /* 描述保留多行，最多显示两行（超出省略），便于卡片高度可控 */
+        .tool-desc {
+            font-size: 13px;
+            color: var(--desc-text-color);
+            margin: 0;
+            line-height: 1.35;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        /* 迷你徽章靠右上角显示，避免换行干扰 */
+        .mini-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            margin-left: 6px;
+            font-weight: 500;
+            align-self: flex-start;
+            flex-shrink: 0;
+        }
+
+        .badge-free {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .badge-paid {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .badge-freemium {
+            background: #f5f3ff;
+            color: #7c3aed;
+        }
+
+        .badge-new {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    color: #ffffff; /* 渐变通常配白字 */
+        }
+
+        .dark-mode .badge-free {
+            background: rgba(4, 120, 87, 0.2);
+            color: #6ee7b7;
+        }
+
+        .dark-mode .badge-paid {
+            background: rgba(185, 28, 28, 0.2);
+            color: #fca5a5;
+        }
+
+        .dark-mode .badge-freemium {
+            background: rgba(180, 83, 9, 0.2);
+            color: #fcd34d;
+        }
+
+        .dark-mode .badge-new {
+            background: rgba(67, 56, 202, 0.2);
+            color: #a5b4fc;
+        }
+
+        /* 轮播相关样式已移除；使用单张静态背景，保持头部简洁 */
+
+        footer {
+            background: var(--footer-bg);
+            padding: 10px 0 5px;
+            margin-top: 30px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 5px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: var(--text-color);
+            font-weight: 700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section a {
+            color: var(--desc-text-color);
+            text-decoration: none;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--card-border);
+            color: var(--desc-text-color);
+            font-size: 0.9rem;
+        }
+
+        .copyright a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .copyright a:hover {
+            color: var(--primary-color);
+        }
+
+        #back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 56px;
+            height: 56px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 5px 15px rgba(71, 11, 18, 0.4);
+            z-index: 999;
+            transition: all 0.3s;
+        }
+
+        #back-to-top:hover {
+            transform: translateY(-5px);
+            background: black;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.8rem;
+            }
+
+            .modern-search-wrapper {
+                width: 90%;
+                margin-bottom: 40px;
+            }
+
+            .modern-search-btn span {
+                display: none;
+            }
+
+            .modern-search-btn {
+                padding: 14px;
+                width: 50px;
+                justify-content: center;
+            }
+
+            .nav-container {
+                padding: 0 15px;
+            }
+
+            .right-actions {
+                gap: 8px;
+            }
+
+            .auth-btn {
+                padding: 6px 14px;
+                font-size: 0.85rem;
+            }
+
+            .logo span {
+                display: none;
+            }
+
+            .logo i {
+                font-size: 1.5rem;
+            }
+
+            /* sidebar becomes horizontal on small screens */
+            .content-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: relative;
+                top: 0;
+                margin-bottom: 20px;
+            }
+
+            .main-content {
+                padding-left: 0;
+            }
+        }
+
+        .scenarios-section {
+            padding: 80px 0;
+            border-top: 1px solid var(--card-border);
+            margin-top: 40px;
+        }
+
+        .scenarios-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .scenarios-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        /* sidebar and layout wrapper */
+        .content-wrapper {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .sidebar {
+            width: 240px;
+            padding: 20px;
+            position: sticky;
+            top: 80px;
+            background: transparent;
+            flex-shrink: 0;
+        }
+
+        .main-content {
+            flex: 1;
+            padding-left: 20px;
+        }
+
+        /* override scenarios grid when used inside sidebar */
+        .sidebar .scenarios-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .sidebar .scenario-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.2s;
+        }
+
+        .sidebar .scenario-card:hover {
+            background: var(--tag-bg);
+        }
+
+        .sidebar .scenario-icon {
+            font-size: 1.3rem;
+        }
+
+        .sidebar .scenario-card h3 {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .sidebar .scenario-card p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--desc-text-color);
+        }
+
+        .scenario-card {
+            text-decoration: none;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: transform 0.3s ease;
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .scenario-icon {
+            font-size: 1.8rem;
+            color: #000;
+            margin-bottom: 15px;
+        }
+
+        .scenario-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .scenario-card p {
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        @media (max-width: 992px) {
+            .scenarios-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .scenarios-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dark-mode .scenarios-header h2,
+        .dark-mode .scenario-icon,
+        .dark-mode .scenario-card h3 {
+            color: #fff;
+        }
+
+        .dark-mode .scenario-card p {
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<!-- 网站访客统计脚本：使用 defer 防止阻塞渲染 -->
+<script defer src="https://tinymetrics.io/tm.js"></script>
+
+<body>
+
+    <nav class="global-navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-compass"></i>
+                <span>精选AI工具</span>
+            </a>
+            <button class="nav-freq-btn" id="openFreqTools" style="border: none; cursor: pointer;">
+                <i class="fas fa-star"></i>
+                <span>常用工具</span>
+            </button>
+            <button class="nav-news-btn" style="border: none; cursor: pointer;">
+                <i class="fas fa-fire"></i>
+                <span>AI热门资讯</span>
+            </button>
+
+            <div class="right-actions">
+               <!---<button id="openLogin" class="auth-btn login-btn" style="border: none; cursor: pointer;">Sign
+                    in</button>
+                <button id="openRegister" class="auth-btn register-btn" style="border: none; cursor: pointer;">Sign
+                    up</button>
+
+                <div class="dropdown-wrapper">
+                    <div class="user-avatar-btn" tabindex="0">
+                        <img src="images/Lebron.jpg" alt="用户头像">
+                    </div>
+                    <div class="dropdown-menu user-menu">
+                        <div class="user-info-header">
+                            <div class="user-name">Guest User</div>
+                            <div class="user-level">普通会员</div>
+                        </div>
+                        <a href="profile.html" class="menu-item"><i class="fas fa-user"></i> 个人中心</a>
+                        <a href="#" class="menu-item"><i class="fas fa-cog"></i> 账号设置</a>
+                        <a href="#" class="menu-item"><i class="fas fa-star"></i> 我的收藏</a>
+                        <div class="divider-line"></div>
+                        <a href="#" class="menu-item logout-item"><i class="fas fa-sign-out-alt"></i> 退出登录</a>
+                    </div>
+                </div>--->
+
+                <!--<div class="dropdown-wrapper">
+                    <button class="icon-btn share-btn" aria-label="分享">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="menu-item" onclick="alert('微信分享功能接入中...')">
+                            <i class="fab fa-weixin" style="color: #07c160;"></i> 微信好友
+                        </div>
+                        <div class="menu-item" onclick="alert('QQ分享功能接入中...')">
+                            <i class="fab fa-qq" style="color: #12b7f5;"></i> QQ好友
+                        </div>
+                        <div class="menu-item" onclick="copyLink()">
+                            <i class="fas fa-link" style="color: #64748b;"></i> 复制链接
+                        </div>
+                    </div>
+                </div>-->
+
+                <div class="dropdown-wrapper">
+                    <button class="icon-btn" aria-label="语言">
+                        <i class="fas fa-globe"></i>
+                    </button>
+                    <div class="dropdown-menu" style="width: 140px;">
+                        <a href="?lang=zh" class="menu-item">🇨🇳 简体中文</a>
+                        <a href="?lang=en" class="menu-item">🇺🇸 English</a>
+                    </div>
+                </div>
+
+                <button id="theme-toggle" class="icon-btn" aria-label="切换主题模式">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- 登录弹窗：新增代码开始 -->
+    <dialog id="loginDialog" style="
+    border: none;
+    border-radius: 16px;
+    padding: 24px;
+    width: 100%;
+    max-width: 420px;
+    background: var(--card-bg);
+    color: var(--text-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    overflow: hidden;
+">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-color);">账号登录</h2>
+            <button id="closeLogin" style="
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--desc-text-color);
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        ">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- 登录表单 -->
+        <form id="loginForm" style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label for="loginUsername" style="font-size: 0.9rem; color: var(--text-color); font-weight: 600;">
+                    用户名/手机号
+                </label>
+                <input type="text" id="loginUsername" required style="
+                padding: 12px 16px;
+                border: 1px solid var(--card-border);
+                border-radius: 10px;
+                background: var(--bg-color);
+                color: var(--text-color);
+                font-size: 1rem;
+                outline: none;
+                transition: border 0.2s;
+            ">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label for="loginPassword" style="font-size: 0.9rem; color: var(--text-color); font-weight: 600;">
+                        密码
+                    </label>
+                    <a href="#" style="font-size: 0.85rem; color: black; text-decoration: none;">
+                        忘记密码？
+                    </a>
+                </div>
+                <input type="password" id="loginPassword" required style="
+                padding: 12px 16px;
+                border: 1px solid var(--card-border);
+                border-radius: 10px;
+                background: var(--bg-color);
+                color: var(--text-color);
+                font-size: 1rem;
+                outline: none;
+                transition: border 0.2s;
+            ">
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                <input type="checkbox" id="rememberMe"
+                    style="width: 16px; height: 16px; accent-color: var(--primary-color);">
+                <label for="rememberMe" style="font-size: 0.85rem; color: var(--desc-text-color);">
+                    记住我（7天免登录）
+                </label>
+            </div>
+
+            <button type="submit" style="
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: black;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            margin-top: 8px;
+        ">
+                登录账号
+            </button>
+
+            <div style="
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--desc-text-color);
+            margin-top: 16px;
+        ">
+                还没有账号？
+                <a href="#" id="goRegister" style="color:black; font-weight: 600; text-decoration: none;">
+                    立即注册
+                </a>
+            </div>
+
+            <!-- 第三方登录 -->
+            <div style="margin-top: 20px; border-top: 1px solid var(--card-border); padding-top: 20px;">
+                <p style="text-align: center; font-size: 0.85rem; color: var(--desc-text-color); margin-bottom: 16px;">
+                    其他登录方式
+                </p>
+                <div style="display: flex; justify-content: center; gap: 20px;">
+                    <button type="button" style="
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 50%;
+                    border: 1px solid var(--card-border);
+                    background: var(--bg-color);
+                    color: var(--primary-color);
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.2rem;
+                    transition: all 0.2s;
+                ">
+                        <i class="fab fa-weixin" style="color: #07c160;"></i>
+                    </button>
+                    <button type="button" style="
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 50%;
+                    border: 1px solid var(--card-border);
+                    background: var(--bg-color);
+                    color: var(--primary-color);
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.2rem;
+                    transition: all 0.2s;
+                ">
+                        <i class="fab fa-qq" style="color: #12b7f5;"></i>
+                    </button>
+                    <button type="button" style="
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 50%;
+                    border: 1px solid var(--card-border);
+                    background: var(--bg-color);
+                    color: var(--primary-color);
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.2rem;
+                    transition: all 0.2s;
+                ">
+                        <i class="fab fa-github" style="color: #333;"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </dialog>
+    <!-- 登录弹窗：新增代码结束 -->
+    <dialog id="registerDialog"
+        style=" border: none; border-radius: 16px; padding: 24px; width: 100%; max-width: 420px; background: var(--card-bg); color: var(--text-color); box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; ">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--text-color);">创建新账号</h2>
+            <button id="closeRegister"
+                style=" background: transparent; border: none; font-size: 1.2rem; color: var(--desc-text-color); cursor: pointer; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; ">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <form id="registerForm" style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label for="regUsername" style="font-size: 0.9rem; color: var(--text-color); font-weight: 600;"> 用户名
+                </label>
+                <input type="text" id="regUsername" placeholder="请输入用户名" required
+                    style=" padding: 12px 16px; border: 1px solid var(--card-border); border-radius: 10px; background: var(--bg-color); color: var(--text-color); font-size: 1rem; outline: none; transition: border 0.2s; ">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label for="regEmail" style="font-size: 0.9rem; color: var(--text-color); font-weight: 600;"> 电子邮箱
+                </label>
+                <input type="email" id="regEmail" placeholder="example@mail.com" required
+                    style=" padding: 12px 16px; border: 1px solid var(--card-border); border-radius: 10px; background: var(--bg-color); color: var(--text-color); font-size: 1rem; outline: none; transition: border 0.2s; ">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label for="regPassword" style="font-size: 0.9rem; color: var(--text-color); font-weight: 600;"> 设置密码
+                </label>
+                <input type="password" id="regPassword" placeholder="至少6位字符" required
+                    style=" padding: 12px 16px; border: 1px solid var(--card-border); border-radius: 10px; background: var(--bg-color); color: var(--text-color); font-size: 1rem; outline: none; transition: border 0.2s; ">
+            </div>
+
+            <div style="display: flex; align-items: flex-start; gap: 8px; margin-top: 4px;">
+                <input type="checkbox" id="agreeTerms" required
+                    style="width: 16px; height: 16px; margin-top: 3px; accent-color: var(--primary-color);">
+                <label for="agreeTerms" style="font-size: 0.85rem; color: var(--desc-text-color);">
+                    我已阅读并同意 <a href="#" style="color: black; font-weight: 600; text-decoration: none;">用户协议</a> 和 <a
+                        href="#" style="color: black; font-weight: 600; text-decoration: none;">隐私政策</a>
+                </label>
+            </div>
+
+            <button type="submit"
+                style=" padding: 12px; border: none; border-radius: 10px; background: black; color: white; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.18s ease; margin-top: 8px; ">
+                立即注册 </button>
+
+            <div style=" text-align: center; font-size: 0.9rem; color: var(--desc-text-color); margin-top: 16px; ">
+                已经有账号？ <a href="#" id="goLogin" style="color:black; font-weight: 600; text-decoration: none;"> 返回登录 </a>
+            </div>
+        </form>
+    </dialog>
+    <header>
+        <div class="header-background"></div>
+
+        <div class="container">
+            <h1 class="site-title">Toolswith.ai</h1>
+            <p class="header-subtitle">Discover the best AI Tools with us.</p>
+            <div class="modern-search-wrapper">
+                <form action="#" method="get" class="modern-search-form">
+                    <i class="fas fa-search search-icon-left"></i>
+                    <input type="text" class="modern-search-input" id="" name="q" placeholder="搜索AI工具，例如：Midjourney..."
+                        aria-label="搜索AI工具">
+                    <button type="submit" class="modern-search-btn">
+                        <span>Go</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="content-wrapper">
+        <main class="container main-content">
+            <section class="tools-section" id="hot">
+                <a href="/subweb1.html" class="section-title" target="_blank">热门推荐</a>
+                <div class="tools-grid">
+                    <a href="https://www.doubao.com/" target="_blank" class="tool-card">
+                        <img src="images/doubao.svg" alt="豆包" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">豆包<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">字节跳动AI助手，简单好用的智能伙伴。</div>
+                        </div>
+                    </a>
+                    <a href="https://replit.com/" target="_blank" class="tool-card">
+                        <img src="images/deepseek.svg" alt="deepseek" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">deepseek<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">深度求索AI在线平台,提供强大的AI模型。</div>
+                        </div>
+                    </a>
+                    <a href="https://tongyi.aliyun.com/" target="_blank" class="tool-card">
+                        <img src="images/tongyi.svg" alt="通义千问" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">通义千问<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">阿里云大语言模型，全能型AI助手。</div>
+                        </div>
+                    </a>
+                    <a href="https://yuanbao.tencent.com" target="_blank" class="tool-card">
+                        <img src="images/tengxun.svg" alt="腾讯元宝" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">腾讯元宝<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">腾讯智能助手，依托混元大模型。</div>
+                        </div>
+                    </a>
+                    <a href="https://chat.openai.com/" target="_blank" class="tool-card">
+                        <img src="images/ChatGPT.svg" alt="ChatGPT" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">ChatGPT<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">OpenAI的对话式大模型</div>
+                        </div>
+                    </a>
+                    <a href="https://www.kimi.com/" target="_blank" class="tool-card">
+                        <img src="images/kimi-icon.svg" alt="Kimi" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Kimi<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">月之暗面智能助手</div>
+                        </div>
+                    </a>
+                    <a href="https://wenxin.baidu.com/" target="_blank" class="tool-card">
+                        <img src="images/wenxinyiyan.svg" alt="文心一言" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">文心一言<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">百度全新一代知识增强大语言模型。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.coze.cn/" target="_blank" class="tool-card">
+                        <img src="images/coze.png" alt="Coze" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Coze<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">字节跳动AI Bot开发平台，快速创建Bot。</div>
+                        </div>
+                    </a>
+                    <a href="https://cursor.sh/" target="_blank" class="tool-card">
+                        <img src="images/cursor.webp" alt="Coze" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Cursor<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">AI驱动的代码编辑器，支持智能代码生成和编辑。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.klingai.com/" target="_blank" class="tool-card">
+                        <img src="images/keling.svg" alt="Coze" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">可灵AI<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">可灵AI是腾讯推出的一站式AI创作平台,支持视频等多种内容创作。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+            <section class="tools-section" id="foreign">
+                <a href="#" class="section-title" target="_blank">国外热门AI</a>
+                <div class="tools-grid">
+                    <a href="https://chat.openai.com/" target="_blank" class="tool-card">
+                        <img src="images/ChatGPT.svg" alt="ChatGPT" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">ChatGPT<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">OpenAI的对话式大模型</div>
+                        </div>
+                    </a>
+                    <a href="https://www.groks.ai/" target="_blank" class="tool-card">
+                        <img src="images/grok.png" alt="Grok" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Grok<span class="mini-badge badge-new">新工具</span></div>
+                            <div class="tool-desc">Elon Musk推出的AI助手</div>
+                        </div>
+                    </a>
+                    <a href="https://gemini.google.com" target="_blank" class="tool-card">
+                        <img src="images/gemini-ai.svg" alt="Gemini" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Gemini<span class="mini-badge badge-new">新工具</span></div>
+                            <div class="tool-desc">面向营销和内容创作的最强AI平台</div>
+                        </div>
+                    </a>
+                    <a href="https://www.anthropic.com/" target="_blank" class="tool-card">
+                        <img src="images/Claude.svg" alt="Claude" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Claude<span class="mini-badge badge-new">新工具</span></div>
+                            <div class="tool-desc">Anthropic出品的对话与写作助手,安全可靠。</div>
+                        </div>
+                    </a>
+                    <a href="https://bard.google.com/" target="_blank" class="tool-card">
+                        <img src="images/bard.svg" alt="Bard" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Bard<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">Google对话型AI,擅长搜索类知识与生成类任务。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.perplexity.ai/" target="_blank" class="tool-card">
+                        <img src="images/perplexity.svg" alt="Perplexity" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Perplexity<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">面向事实检索与对话的混合型搜索助手,回答带来源引用。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.midjourney.com/" target="_blank" class="tool-card">
+                        <img src="images/MidJourney.svg"Midjourney" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Midjourney<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">生成式图像工具,擅长艺术风格与高质量视觉输出。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+            <section class="tools-section" id="search-engine">
+                <a href="/subweb4.html" class="section-title" target="_blank">AI搜索引擎</a>
+                <div class="tools-grid">
+                    <a href="https://www.bing.com/new" target="_blank" class="tool-card">
+                        <img src="images/Bing.svg" alt="Bing AI" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Bing AI<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">微软AI增强搜索，集成GPT-4能力。</div>
+                        </div>
+                    </a>
+                    <a href="https://ai.quark.cn/" target="_blank" class="tool-card">
+                        <img src="images/kuake.svg" alt="夸克AI" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">夸克AI<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">智能搜索与问答，提供更精准的答案。</div>
+                        </div>
+                    </a>
+                    <a href="https://think.baidu.com/" target="_blank" class="tool-card">
+                        <img src="images/baidu.svg" alt="百度AI探索版" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">百度AI探索版<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">百度智能搜索，对话式获取信息。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.sou.com/" target="_blank" class="tool-card">
+                        <img src="images/nami.svg" alt="纳米搜索" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">纳米搜索<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">AI驱动的搜索引擎，无广告干扰。</div>
+                        </div>
+                    </a>
+                    <a href="https://metaso.cn/" target="_blank" class="tool-card">
+                        <img src="images/mitaai.jpg" alt="秘塔搜索" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">秘塔搜索<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">新一代AI搜索引擎，深入理解用户意图。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.zhihu.com/ai" target="_blank" class="tool-card">
+                        <img src="images/zhihu.svg" alt="知乎直答" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">知乎直答<span class="mini-badge badge-new">新工具</span></div>
+                            <div class="tool-desc">知乎推出的AI问答工具，提供更精准的答案。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <section class="tools-section" id="video">
+                <a href="/subweb3.html" class="section-title" target="_blank">AI视频工具</a>
+                <div class="tools-grid">
+                    <a href="https://sora.ai/" target="_blank" class="tool-card">
+                        <img src="images/Sora.svg" alt="sora" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">sora<span class="mini-badge badge-freemium">免费+</div>
+                            <div class="tool-desc">OpenAI 开发的视频生成工具，支持文本到视频的转换。</div>
+                        </div>
+                    </a>
+                    <a href="https://zenvideo.qq.com/" target="_blank" class="tool-card">
+                        <img src="images/zenvideo.svg" alt="腾讯智影" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">腾讯智影<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">智能视频创作平台，支持数字人播报。</div>
+                        </div>
+                    </a>
+                    <a href="https://aigc.baidu.com/" target="_blank" class="tool-card">
+                        <img src="images/dujia.png" alt="度加创作" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">度加创作<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">百度AI视频创作工具，文章一键转视频。</div>
+                        </div>
+                    </a>
+                    <a href="https://hifly.cc/" target="_blank" class="tool-card">
+                        <img src="images/feiying.png" alt="飞影数字人" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">飞影数字人<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">AI数字人视频生成，口型精准匹配。</div>
+                        </div>
+                    </a>
+                    <a href="https://runwayml.com/" target="_blank" class="tool-card">
+                        <img src="images/runway.svg" alt="Runway ML" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Runway ML<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">功能全面的AI视频编辑平台，支持绿幕抠像和风格转换。</div>
+                        </div>
+                    </a>
+                    <a href="https://pika.art/" target="_blank" class="tool-card">
+                        <img src="images/pika.jpg" alt="Pika" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Pika<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">AI驱动的视频生成工具，可从文本或图像生成视频。</div>
+                        </div>
+                    </a>
+                    <a href="https://kaiber.ai/" target="_blank" class="tool-card">
+                        <img src="images/kaiber.png" alt="Kaiber" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Kaiber<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">AI视频生成平台，可将静态图像转换为动态视频。</div>
+                        </div>
+                    </a>
+                    <a href="https://lumen5.com/" target="_blank" class="tool-card">
+                        <img src="images/Lumen5.jpg" alt="Lumen5" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Lumen5<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">智能视频制作平台，博客文章一键转视频。</div>
+                        </div>
+                    </a>
+                    <a href="https://synthesia.io/" target="_blank" class="tool-card">
+                        <img src="images/synthesia.jpg" alt="Synthesia" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Synthesia<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">企业级AI虚拟人视频制作平台，支持多语言。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.heygen.com/" target="_blank" class="tool-card">
+                        <img src="images/heygen.png" alt="Heygen" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Heygen<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">AI虚拟人视频生成平台，支持多种风格和语言。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.hailuoai.com/" target="_blank" class="tool-card">
+                        <img src="images/hailuo.webp" alt="海螺视频" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">海螺视频<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">AI虚拟人视频生成平台，支持多种风格和语言。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+                        <section class="tools-section" id="image">
+                <h2 class="section-title">AI图像工具</h2>
+                <div class="tools-grid">
+                    <a href="https://www.midjourney.com/" target="_blank" class="tool-card">
+                        <img src="images/MidJourney.svg" alt="Midjourney" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Midjourney<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">行业顶尖AI图像生成工具，画质惊艳，社区活跃。</div>
+                        </div>
+                    </a>
+                    <a href="https://stability.ai/" target="_blank" class="tool-card">
+                        <img src="images/stable-diffusion.svg" alt="Stable Diffusion" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Stable Diffusion<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">强大的开源AI图像生成模型，可本地部署，高度可定制。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.canva.com/features/ai/" target="_blank" class="tool-card">
+                        <img src="images/canva.webp" alt="Canva AI" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Canva AI<span class="mini-badge badge-freemium">设计</span></div>
+                            <div class="tool-desc">Canva的AI助手支持一键排版、图片生成与设计智能化输出，适合内容创作者。</div>
+                        </div>
+                    </a>
+                    <a href="https://openai.com/dall-e" target="_blank" class="tool-card">
+                        <img src="images/Dall-e.jpg" alt="DALL-E" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">DALL-E<span class="mini-badge badge-mixed">混合</span></div>
+                            <div class="tool-desc">OpenAI推出的AI图像生成器，创意独特，操作简单。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.jimengai.com/" target="_blank" class="tool-card">
+                        <img src="images/jimeng.svg" alt="即梦AI" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">即梦AI<span class="mini-badge badge-new">新工具</span></div>
+                            <div class="tool-desc">字节跳动推出的AI图像与视频生成工具。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.bing.com/images/create" target="_blank" class="tool-card">
+                        <img src="images/Bing.svg" alt="Bing Image Creator" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Bing Image Creator<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">基于DALL-E 3的微软图像生成工具，免费使用。</div>
+                        </div>
+                    </a>
+                    <a href="https://ideogram.ai/" target="_blank" class="tool-card">
+                        <img src="images/ideogram.svg" alt="Ideogram" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Ideogram<span class="mini-badge badge-mixed">混合</span></div>
+                            <div class="tool-desc">擅长生成带文字的图像，适合海报和社交媒体内容。</div>
+                        </div>
+                    </a>
+                    <a href="https://playgroundai.com/" target="_blank" class="tool-card">
+                        <img src="images/playgroundai.png" alt="Playground AI" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Playground AI<span class="mini-badge badge-mixed">混合</span></div>
+                            <div class="tool-desc">用户友好的AI图像生成平台，每日免费额度充足。</div>
+                        </div>
+                    </a>
+                    <a href="https://deepai.org/" target="_blank" class="tool-card">
+                        <img src="images/deep.png" alt="DeepAI" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">DeepAI<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">提供多种AI艺术生成工具，包括图像和动图。</div>
+                        </div>
+                    </a>
+                    <a href="https://wanxiang.aliyun.com/" target="_blank" class="tool-card">
+                        <img src="images/tongyi.svg" alt="通义万相" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">通义万相<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">通义万相是阿里巴巴集团推出的AI图像生成工具</div>
+                        </div>
+                    </a>
+                    <a href="https://liblib.ai/" target="_blank" class="tool-card">
+                        <img src="images/LiblibAI.svg" alt="LibLib" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">LibLib<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">国内最大的 AI 原生图像生成工具、原创模型共享社区与创作平台</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+            <section class="tools-section" id="dev">
+                <a href="#" class="section-title" target="_blank">AI编程工具</a>
+                <div class="tools-grid">
+                    <a href="https://github.com/features/copilot" target="_blank" class="tool-card">
+                        <img src="images/Copilot.svg" alt="GitHub Copilot" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">GitHub Copilot<span class="mini-badge badge-freemium">免费+</span>
+                            </div>
+                            <div class="tool-desc">基于大模型的代码补全与建议，集成于常见 IDE，提高开发效率。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://replit.com/ghostwriter" target="_blank" class="tool-card">
+                        <img src="images/replit.svg" alt="Replit Ghostwriter" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Replit Ghostwriter<span class="mini-badge badge-freemium">免费+</span>
+                            </div>
+                            <div class="tool-desc">在线 IDE 内置的 AI 编程助手，支持代码生成、修复与解释。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.tabnine.com/" target="_blank" class="tool-card">
+                        <img src="images/tabnine.svg" alt="Tabnine" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Tabnine<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">基于模型的代码补全工具，支持多语言与私有部署。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.codeium.com/" target="_blank" class="tool-card">
+                        <img src="images/Windsurf.svg" alt="windsurf" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Windsurf<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">开箱即用的代码补全与搜索工具，专注极速提示体验。</div>
+                        </div>
+                    </a>
+                    <a href="https://aws.amazon.com/codewhisperer/" target="_blank" class="tool-card">
+                        <img src="images/amazon.svg" alt="Amazon CodeWhisperer" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">CodeWhisperer<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">亚马逊提供的代码生成与建议工具，集成到 AWS 开发工具链中。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.trae.ai/" target="_blank" class="tool-card">
+                        <img src="images/trae.webp" alt="Trae" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Trae<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">Trae 是一个免费的 AI 写作助手，支持多种语言和写作场景。</div>
+                        </div>
+                    </a>
+                    <a href="https://tongyi.aliyun.com/lingma" target="_blank" class="tool-card">
+                        <img src="images/tongyilingma.jpg" alt="通义灵码" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">通义灵码<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">企业级合规首选，阿里云生态无缝对接</div>
+                        </div>
+                    </a>
+                    <a href="https://comate.baidu.com/zh/chat" target="_blank" class="tool-card">
+                        <img src="images/wenxinyiyan.svg"文心快码" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">文心快码<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">百度推出的 AI 代码生成工具，支持多种编程语言</div>
+                        </div>
+                    </a>
+                    <a href="https://iflycode.com/" target="_blank" class="tool-card">
+                        <img src="images/iflycode.jpg" alt="讯飞iFlyCode" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">讯飞iFlyCode<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">讯飞推出的 AI 代码生成工具，支持多种编程语言。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.jetbrains.com/ai/" target="_blank" class="tool-card">
+                        <img src="images/jetbrains.webp" alt="JetBrains AI" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">JetBrains AI<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">JetBrains 推出的 AI 辅助开发工具，集成到 JetBrains IDE 中。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+            <section class="tools-section" id="work">
+                <a href="/subweb2.html" class="section-title" target="_blank">AI办公工具</a>
+                <div class="tools-grid">
+                    <a href="https://fanyi.baidu.com/" target="_blank" class="tool-card">
+                        <img src="images/baidufanyi.svg" alt="百度翻译" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">百度翻译<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">智能多语言翻译，支持文档翻译。</div>
+                        </div>
+                    </a>
+                    <a href="https://sight.youdao.com/" target="_blank" class="tool-card">
+                        <img src="images/wangyijianwai.svg" alt="网易见外" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">网易见外<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">智能视频翻译平台，自动生成双语字幕。</div>
+                        </div>
+                    </a>
+                    <a href="https://meeting.iflyrec.com/" target="_blank" class="tool-card">
+                        <img src="images/xunfeihuiyi.png" alt="讯飞会议" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">讯飞会议<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">智能会议记录工具，实时语音转文字。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.wps.com/ai" target="_blank" class="tool-card">
+                        <img src="images/wpsai.svg" alt="WPS AI" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">WPS<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">WPS旗下AI软件</div>
+                        </div>
+                    </a>
+                    <a href="https://cloud.yoo-ai.com/" target="_blank" class="tool-card">
+                        <img src="images/qingyuntu.jpg" alt="轻云图" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">轻云图<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">AI图表生成工具，快速制作数据可视化。</div>
+                        </div>
+                    </a>
+                    <a href="https://wj.qq.com/" target="_blank" class="tool-card">
+                        <img src="images/tengxunwenjuan.svg" alt="腾讯问卷" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">腾讯问卷<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">智能问卷调研平台,AI辅助题目设计。</div>
+                        </div>
+                    </a>
+                    <a href="https://tongyi.aliyun.com/qianwen" target="_blank" class="tool-card">
+                        <img src="images/tongyi.svg" alt="通义智文" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">通义智文<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">通义实验室推出的AI写作助手，帮助用户快速生成高质量内容。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+            <section class="tools-section" id="academic">
+                <a href="#academic" class="section-title">AI学术工具</a>
+                <div class="tools-grid">
+                    <a href="https://www.semanticscholar.org/" target="_blank" class="tool-card">
+                        <img src="images/semantic-scholar-search.svg" alt="Semantic Scholar" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Semantic Scholar<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">面向科研人员的智能文献检索、引用网络与推荐分析。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://consensus.app/" target="_blank" class="tool-card">
+                        <img src="images/Consensus.png" alt="Consensus" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Consensus<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">一个基于 AI 的学术论文推荐与分析平台，帮助用户发现相关研究。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.connectedpapers.com/" target="_blank" class="tool-card">
+                        <img src="images/connectedpapers.webp" alt="Connected Papers" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Connected Papers<span class="mini-badge badge-freemium">免费+</span>
+                            </div>
+                            <div class="tool-desc">通过论文网络可视化帮助发现相关研究与发展脉络。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.elicit.org/" target="_blank" class="tool-card">
+                        <img src="images/elicit.jpg" alt="Elicit" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Elicit<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">一个 AI 驱动的学术论文推荐平台，帮助用户快速发现相关研究。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.chatpdf.com/" target="_blank" class="tool-card">
+                        <img src="images/chatpdf.webp" alt="chatpdf" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">chatpdf<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">论文阅读加速、自动摘要与公式解析，提升论文理解效率。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.zotero.org/" target="_blank" class="tool-card">
+                        <img src="images/zotero.svg" alt="Zotero" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Zotero<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">开源文献管理与注释工具，支持快速保存、整理与引用格式导出。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" class="tool-card">
+                        <img src="images/pubmed.svg" alt="PubMed" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">PubMed<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">生物医学与生命科学领域的重要文献检索数据库。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+            <section class="tools-section" id="writing">
+                <a href="#" class="section-title" target="_blank">AI写作工具</a>
+                <div class="tools-grid">
+                    <a href="https://www.jasper.ai/" target="_blank" class="tool-card">
+                        <img src="images/jasper.svg" alt="Jasper" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Jasper<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-desc">面向营销与内容创作的写作助手，提供模板与长文本生成功能。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.copy.ai/" target="_blank" class="tool-card">
+                        <img src="images/copyai.svg" alt="Copy.ai" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Copy.ai<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">专注广告文案与短内容生成的 AI 工具，适合电商与营销场景。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://writesonic.com/" target="_blank" class="tool-card">
+                        <img src="images/writesonic.svg" alt="Writesonic" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Writesonic<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">支持博客、着陆页、广告等多种内容生成，集成 SEO 辅助。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.shortlyai.com/" target="_blank" class="tool-card">
+                        <img src="images/shortlyai.svg" alt="ShortlyAI" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">ShortlyAI<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">专注于长文写作与续写，适合小说与长篇文章的创作辅助。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.sudowrite.com/" target="_blank" class="tool-card">
+                        <img src="images/sudowrite.svg" alt="Sudowrite" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Sudowrite<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">为小说作者设计的创意写作工具，提供灵感、情节生成与润色。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.grammarly.com/" target="_blank" class="tool-card">
+                        <img src="images/grammarly.svg" alt="Grammarly" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Grammarly<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">语法检查与写作风格建议工具，适合提升文本质量与可读性。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <section class="tools-section" id="agents">
+                <a href="#" class="section-title" target="_blank">Agent 工具</a>
+                <div class="tools-grid">
+                    <a href="https://github.com/langchain-ai/langchain" target="_blank" class="tool-card">
+                        <img src="images/langchain.svg" alt="LangChain" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">LangChain<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">用于构建链式代理与对话式agent的开源工具库。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/Significant-Gravitas/Auto-GPT" target="_blank" class="tool-card">
+                        <img src="images/autogpt.svg" alt="Auto-GPT" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Auto-GPT<span class="mini-badge badge-new">新工具</span></div>
+                            <div class="tool-desc">自动化代理示例，展示多步任务自动化能力（需谨慎使用）。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://github.com/yoheinakajima/babyagi" target="_blank" class="tool-card">
+                        <img src="images/babyagi.svg" alt="BabyAGI" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">BabyAGI<span class="mini-badge badge-new">新工具</span></div>
+                            <div class="tool-desc">轻量化任务管理型 agent，适用于原型与教学用途。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://agentgpt.reworkd.ai/" target="_blank" class="tool-card">
+                        <img src="images/agentgpt.svg" alt="AgentGPT" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">AgentGPT<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">基于大模型的在线 agent 平台，支持多步骤任务与插件扩展。</div>
+                        </div>
+                    </a>
+
+                    <a href="https://huggingface.co/chat" target="_blank" class="tool-card">
+                        <img src="images/huggingchat.svg" alt="HuggingChat Agents" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">HuggingChat Agents<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">Hugging Face 提供的对话与 agent 实验环境，适合探索模型能力。</div>
+                        </div>
+                    </a>
+
+                    <a href="#" target="_blank" class="tool-card">
+                        <img src="images/mcp.svg" alt="Custom MCP" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">自定义 Agent（MCP）<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">基于 MCP 或自托管服务搭建的自定义代理，可接入团队知识库与流程。</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+        </main>
+    </div> <!-- end content-wrapper -->
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <ul>
+                        <li><a href="#">网站简介</a></li>
+                        <!--<li><a href="#">用户反馈</a></li>
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">合作伙伴</a></li>-->
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>帮助支持</h3>
+                    <ul>
+                        <li><a href="helpcenter.html">帮助中心</a></li>
+                        <!--<li><a href="#">使用教程</a></li>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">API文档</a></li>-->
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>资源中心</h3>
+                    <ul>
+                        <li><a href="#">AI工具评测</a></li>
+                        <!--<li><a href="#">最佳实践</a></li>
+                        <li><a href="#">案例分享</a></li>
+                        <li><a href="#">学习资源</a></li>-->
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <ul>
+                        <li><a href="mailto:zxqs1014@163.com">邮箱反馈</a></li>
+                        <!--<li><a href="#">微信公众号</a></li>
+                        <li><a href="#">商务合作</a></li>
+                        <li><a href="#">法律条款</a></li>-->
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                Copyright © 2025 AI导航罗盘
+                <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">鲁ICP备2476931号</a>
+            </div>
+        </div>
+    </footer>
+
+    <button id="back-to-top" title="回到顶部"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        function copyLink() {
+            var url = window.location.href;
+            navigator.clipboard.writeText(url).then(function () {
+                alert('链接已复制到剪贴板！');
+            }).catch(function (err) {
+                console.error('复制失败：', err);
+                alert('复制失败，请手动复制网址：' + url);
+            });//代码调用了现代浏览器的 Clipboard API
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var toggleButton = document.getElementById('theme-toggle');
+            var body = document.body;//使用了 DOMContentLoaded 事件监听器，确保在DOM完全加载后再执行脚本。
+
+            function updateThemeIcon(isDark) {
+                if (isDark) {
+                    toggleButton.innerHTML = '<i class="fas fa-sun"></i>';
+                } else {
+                    toggleButton.innerHTML = '<i class="fas fa-moon"></i>';
+                }
+            }
+
+            toggleButton.addEventListener('click', function () {
+                body.classList.toggle('dark-mode');
+                var isDark = body.classList.contains('dark-mode');
+                localStorage.setItem('dark-mode', isDark);
+                updateThemeIcon(isDark);
+            });//localStorage 是浏览器提供的一个小型数据库
+
+            if (localStorage.getItem('dark-mode') === 'true') {
+                body.classList.add('dark-mode');
+                updateThemeIcon(true);
+            }//用户偏好设置持久化,在普通的网页应用中，刷新页面会导致内存状态丢失，用户刚才切换好的深色模式会跳回默认值，这在用户体验上是不友好的。
+
+            var backToTop = document.getElementById('back-to-top');
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 300) {
+                    backToTop.style.display = 'flex';
+                } else {
+                    backToTop.style.display = 'none';
+                }
+            });//只要用户的手指划动了鼠标滚轮或者触摸了屏幕，大括号里的代码就会被立刻唤醒。
+            backToTop.addEventListener('click', function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });//点击后去往哪里,浏览器自带的滚动控制函
+        });
+        /*async function refreshTools() {
+            try {
+                const res = await fetch('/api/tools');
+                const tools = await res.json();
+                
+                const container = document.querySelector('#hot .tools-grid');
+                if (tools && tools.length > 0) {
+                    // 在赋值前，确保结构完全符合 CSS 预期的“左图右文”
+                    container.innerHTML = tools.map(tool => `
+                        <a href="${tool.url}" target="_blank" class="tool-card">
+                            <img src="${tool.icon}" alt="${tool.name}" loading="lazy">
+                            <div class="tool-info">
+                                <div class="tool-name">
+                                    ${tool.name}
+                                    <span class="mini-badge badge-free">${tool.tag || '免费'}</span>
+                                </div>
+                                <div class="tool-desc">${tool.desc}</div>
+                            </div>
+                        </a>
+                    `).join('');
+                }
+            } catch (err) {
+                console.error("加载工具列表失败:", err);
+            }
+        }*/
+        document.addEventListener('DOMContentLoaded', refreshTools);
+    </script>
+    <script src="script.js"></script>
+    <!-- 登录弹窗控制脚本：新增代码开始 -->
+    <script>
+        // 1. 获取DOM元素
+        // --- 弹窗逻辑统一管理 ---
+        const loginDialog = document.getElementById('loginDialog');
+        const registerDialog = document.getElementById('registerDialog');
+
+        // 获取触发按钮
+        const openLoginBtn = document.getElementById('openLogin');
+        const openRegisterBtn = document.getElementById('openRegister');
+        const closeLoginBtn = document.getElementById('closeLogin');
+        const closeRegisterBtn = document.getElementById('closeRegister');
+
+        // 获取互跳链接
+        const goRegisterBtn = document.getElementById('goRegister'); // 登录框里的“立即注册”
+        const goLoginBtn = document.getElementById('goLogin');       // 注册框里的“返回登录”
+
+        // --- 基础开关逻辑 ---
+
+        // 打开登录
+        openLoginBtn.onclick = () => loginDialog.showModal();
+        // 关闭登录
+        closeLoginBtn.onclick = () => loginDialog.close();
+
+        // 打开注册
+        openRegisterBtn.onclick = () => registerDialog.showModal();
+        // 关闭注册
+        closeRegisterBtn.onclick = () => registerDialog.close();
+
+        // 点击弹窗外部（蒙层）自动关闭
+        [loginDialog, registerDialog].forEach(dialog => {
+            dialog.addEventListener('click', (e) => {
+                if (e.target === dialog) dialog.close();
+            });
+        });
+
+        // --- 互跳逻辑（关键：先关后开） ---
+
+        // 从登录转到注册
+        goRegisterBtn.onclick = (e) => {
+            e.preventDefault();
+            loginDialog.close();
+            setTimeout(() => registerDialog.showModal(), 50); // 加点延迟防止冲突
+        };
+
+        // 从注册转到登录
+        goLoginBtn.onclick = (e) => {
+            e.preventDefault();
+            registerDialog.close();
+            setTimeout(() => loginDialog.showModal(), 50);
+        };
+
+        // --- 表单提交处理 ---
+
+        document.getElementById('loginForm').onsubmit = (e) => {
+            e.preventDefault();
+            alert('登录成功！');
+            loginDialog.close();
+        };
+
+        document.getElementById('registerForm').onsubmit = (e) => {
+            e.preventDefault();
+            alert('注册成功！');
+            registerDialog.close();
+        };
+    </script>
+    <!-- 登录弹窗控制脚本：新增代码结束 -->
+<!-- AI热门资讯弹窗 -->
+<dialog id="newsDialog" style="
+    border-radius: 16px; 
+    padding: 24px; 
+    width: 80%; 
+    max-width: 800px;
+    background: var(--card-bg); 
+    color: var(--text-color); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    max-height: 80vh; 
+    overflow: auto;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 9999 !important;
+">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="color: var(--text-color);">AI热门资讯</h2>
+        <button id="closeNews" style="
+            background: transparent; 
+            border: none; 
+            font-size: 1.2rem; 
+            color: var(--desc-text-color);
+            cursor: pointer;
+        ">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div id="newsList"></div>
+</dialog>
+<dialog id="freqDialog" style="
+    border-radius: 16px; 
+    padding: 24px; 
+    width: 80%; 
+    max-width: 800px;
+    background: var(--card-bg); 
+    color: var(--text-color); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    max-height: 80vh; 
+    overflow: auto;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 9999 !important;
+">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="color: var(--text-color); font-weight: 700; font-size: 1.4rem;">我的常用工具</h2>
+        <button id="closeFreq" style="
+            background: transparent; 
+            border: none; 
+            font-size: 1.2rem; 
+            color: var(--desc-text-color);
+            cursor: pointer;
+            width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center; border-radius: 8px;
+        ">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div id="freqList" class="tools-grid"></div>
+</dialog>
+<!-- AI资讯弹窗JS逻辑 -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 1. 记录点击事件
+    // 选中页面上所有的工具卡片
+    const allToolCards = document.querySelectorAll('.tools-grid .tool-card');
+    
+    allToolCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const url = this.getAttribute('href');
+            if (!url || url === '#') return; // 忽略无效链接
+            
+            // 巧妙点：直接复制卡片内部的 HTML，这样图标、名字、Badge标签都会原封不动保存
+            const cardHTML = this.innerHTML; 
+
+            // 从本地存储获取现有数据，没有则初始化为空对象
+            let freqTools = JSON.parse(localStorage.getItem('myFreqTools')) || {};
+            
+            if (freqTools[url]) {
+                freqTools[url].count += 1;
+                freqTools[url].html = cardHTML; // 更新HTML防图标更改
+            } else {
+                freqTools[url] = {
+                    count: 1,
+                    html: cardHTML,
+                    timestamp: Date.now() // 用于排序：相同点击量，晚点的排前面
+                };
+            }
+            
+            // 存回本地
+            localStorage.setItem('myFreqTools', JSON.stringify(freqTools));
+        });
+    });
+
+    // 2. 弹窗打开与渲染逻辑
+    const freqBtn = document.getElementById('openFreqTools');
+    const freqDialog = document.getElementById('freqDialog');
+    const closeFreq = document.getElementById('closeFreq');
+    const freqList = document.getElementById('freqList');
+
+    if (freqBtn) {
+        freqBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            freqDialog.showModal();
+            renderFreqTools();
+        });
+    }
+
+    if (closeFreq) {
+        closeFreq.addEventListener('click', () => {
+            freqDialog.close();
+        });
+    }
+
+    // 点击蒙层关闭
+    freqDialog.addEventListener('click', (e) => {
+        if (e.target === freqDialog) freqDialog.close();
+    });
+
+    function renderFreqTools() {
+        let freqTools = JSON.parse(localStorage.getItem('myFreqTools')) || {};
+        
+        // 将对象转换为数组以便排序
+        let toolsArray = Object.keys(freqTools).map(url => ({
+            url: url,
+            count: freqTools[url].count,
+            html: freqTools[url].html,
+            timestamp: freqTools[url].timestamp
+        }));
+
+        // 排序规则：点击次数从高到低，次数相同按时间从新到旧
+        toolsArray.sort((a, b) => {
+            if (b.count !== a.count) return b.count - a.count;
+            return b.timestamp - a.timestamp;
+        });
+
+        // 取出前 8 个常用工具（可修改数量）
+        const topTools = toolsArray.slice(0, 8);
+
+        // 如果用户还没点过任何工具
+        if (topTools.length === 0) {
+            freqList.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px 0; color: var(--desc-text-color);">
+                    <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i>
+                    <p>您还没有点击过任何工具，快去探索吧！</p>
+                </div>`;
+            return;
+        }
+
+        // 拼接 HTML 展示
+        let html = '';
+        topTools.forEach(tool => {
+            html += `
+                <a href="${tool.url}" target="_blank" class="tool-card tracked-freq-card" style="position:relative;">
+                    ${tool.html}
+                    <span style="position:absolute; top: -6px; right: -6px; background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: bold; border: 2px solid var(--card-bg);">
+                        ${tool.count} 次
+                    </span>
+                </a>`;
+        });
+        
+        freqList.innerHTML = html;
+
+        // 附加：在弹窗里点击常用工具，也要继续增加次数！
+        freqList.querySelectorAll('.tracked-freq-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const url = this.getAttribute('href');
+                let stored = JSON.parse(localStorage.getItem('myFreqTools')) || {};
+                if (stored[url]) {
+                    stored[url].count += 1;
+                    localStorage.setItem('myFreqTools', JSON.stringify(stored));
+                    // 延迟刷新一下，让用户看到次数增加（可选）
+                    setTimeout(renderFreqTools, 100); 
+                }
+            });
+        });
+    }
+});
+    // 1. 获取元素
+    const newsBtn = document.querySelector('.nav-news-btn');
+    const newsDialog = document.getElementById('newsDialog');
+    const closeNews = document.getElementById('closeNews');
+    const newsList = document.getElementById('newsList');
+
+    // 2. 绑定点击事件（核心：解决点击没反应）
+    if (newsBtn) {
+        newsBtn.addEventListener('click', async (e) => {
+            e.preventDefault(); // 阻止默认行为
+            newsDialog.showModal(); // 打开弹窗
+            loadRealTimeNews(); // 加载资讯
+        });
+    }
+
+    // 3. 关闭弹窗事件
+    if (closeNews) {
+        closeNews.addEventListener('click', () => {
+            newsDialog.close();
+        });
+    }
+
+// 加载实时资讯（备用稳定API版）
+async function loadRealTimeNews() {
+    newsList.innerHTML = '<div style="text-align: center; padding: 40px 0;"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>';
+    try {
+        // 方案1：使用百度AI资讯聚合（无跨域限制）
+        const res = await fetch('https://api.paugram.com/api/baidu?keyword=AI热门资讯&count=10');
+        const data = await res.json();
+        
+        if (!data || data.length === 0) {
+            // 方案2：兜底模拟数据（API仍失败时显示）
+            const mockData = [
+                { title: "GPT-5 最新爆料：支持多模态实时交互", url: "https://www.baidu.com/s?wd=GPT-5最新消息", time: "2026-02-23" },
+                { title: "豆包AI新增「代码一键生成」功能", url: "https://www.baidu.com/s?wd=豆包AI代码生成", time: "2026-02-22" }
+            ];
+            let html = '';
+            mockData.forEach(item => {
+                html += `<a href="${item.url}" target="_blank" style="
+                    display: block; padding: 16px; margin: 8px 0;
+                    background: var(--tag-bg); border-radius: 10px; text-decoration: none; color: inherit;
+                ">
+                    <h3 style="color: var(--primary-color); margin-bottom: 8px;">${item.title}</h3>
+                    <span style="font-size: 0.8rem; color: var(--desc-text-color);">${item.time}</span>
+                </a>`;
+            });
+            newsList.innerHTML = html;
+            return;
+        }
+
+        // 渲染真实资讯
+        let html = '';
+        data.forEach(item => {
+            html += `<a href="${item.link}" target="_blank" style="
+                display: block; padding: 16px; margin: 8px 0;
+                background: var(--tag-bg); border-radius: 10px; text-decoration: none; color: inherit;
+            ">
+                <h3 style="color: var(--primary-color); margin-bottom: 8px;">${item.title}</h3>
+                <span style="font-size: 0.8rem; color: var(--desc-text-color);">${item.time || '最新'}</span>
+            </a>`;
+        });
+        newsList.innerHTML = html;
+    } catch (err) {
+        // 最终兜底：显示模拟数据
+        const mockData = [
+            { title: "GPT-5 最新爆料：支持多模态实时交互", url: "https://www.baidu.com/s?wd=GPT-5最新消息", time: "2026-02-23" },
+            { title: "豆包AI新增「代码一键生成」功能", url: "https://www.baidu.com/s?wd=豆包AI代码生成", time: "2026-02-22" }
+        ];
+        let html = '';
+        mockData.forEach(item => {
+            html += `<a href="${item.url}" target="_blank" style="
+                display: block; padding: 16px; margin: 8px 0;
+                background: var(--tag-bg); border-radius: 10px; text-decoration: none; color: inherit;
+            ">
+                <h3 style="color: var(--primary-color); margin-bottom: 8px;">${item.title}</h3>
+                <span style="font-size: 0.8rem; color: var(--desc-text-color);">${item.time}</span>
+            </a>`;
+        });
+        newsList.innerHTML = html;
+        console.error('API加载失败，已显示模拟数据：', err);
+    }
+}
+</script>
+</body>
+
+</html>

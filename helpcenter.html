@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帮助中心 - AI导航罗盘</title>
+    <link rel="icon" href="images/zhinanzhen.svg" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ================== 基础样式 ================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* ================== 头部样式 ================== */
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .divider {
+            height: 4px;
+            width: 80px;
+            background: #fff;
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+        
+        /* ================== 布局样式 ================== */
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .two-column-layout {
+            display: flex;
+            gap: 30px;
+            width: 100%;
+        }
+        
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        /* ================== 卡片通用样式 ================== */
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 0;
+            transition: transform 0.3s ease;
+        }
+        
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h3 {
+            color: #3498db;
+            margin: 20px 0 10px;
+        }
+
+        /* ================== 1. 常见问题 (FAQ) 样式 ================== */
+        .faq-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .faq-item {
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .faq-question {
+            background-color: #f7f7f7;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .faq-question:hover {
+            background-color: #ebebeb;
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            background-color: white;
+            color: #555;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .faq-answer.active {
+            max-height: 200px;
+            padding: 15px 20px;
+        }
+
+        .faq-icon {
+            font-size: 0.9rem;
+            transition: transform 0.3s;
+        }
+
+        .faq-question[aria-expanded="true"] .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* ================== [修改] 最新AI资讯/教程模块样式 ================== */
+        .news-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .news-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-item:hover {
+            background-color: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .news-thumbnail {
+            width: 80px;
+            height: 60px;
+            border-radius: 6px;
+            object-fit: cover;
+            background-color: #e0e0e0; /* 占位色 */
+            flex-shrink: 0;
+        }
+
+        .news-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .news-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            text-decoration: none;
+            transition: color 0.2s;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 限制标题最多两行 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-title:hover {
+            color: #3498db;
+        }
+
+        .news-meta {
+            font-size: 0.8rem;
+            color: #95a5a6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .news-tag {
+            background-color: #e3f2fd;
+            color: #3498db;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        /* 查看更多按钮 */
+        .view-more-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #f0f4f8;
+            color: #3498db;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .view-more-btn:hover {
+            background-color: #e1e8ed;
+            color: #2980b9;
+        }
+
+
+        /* ================== 表单通用样式 ================== */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+        
+        /* 表单验证图标 */
+        .validation-icon {
+            position: absolute;
+            right: 15px;
+            top: 40px;
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        .input-valid { border-color: #28a745 !important; }
+        .input-invalid { border-color: #dc3545 !important; }
+        .input-valid + .validation-icon { color: #28a745; display: block; }
+        .input-invalid + .validation-icon { color: #dc3545; display: block; }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+
+        /* ================== 回到顶部按钮样式 ================== */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+            font-size: 20px;
+            opacity: 0;           /* 默认透明 */
+            visibility: hidden;   /* 默认隐藏 */
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        #backToTop:hover {
+            background-color: #2575fc;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(37, 117, 252, 0.5);
+        }
+
+        /* ================== 底部与联系信息 ================== */
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .contact-item {
+            flex: 1;
+            min-width: 200px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .contact-item i {
+            font-size: 24px;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        
+        .contact-item h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-bottom {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* ================== 响应式适配 ================== */
+        @media (max-width: 768px) {
+            .two-column-layout {
+                flex-direction: column;
+            }
+            .contact-info {
+                flex-direction: column;
+            }
+            .footer-content {
+                flex-direction: column;
+                text-align: left;
+            }
+            #backToTop {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+        </style>
+    </head>
+    <body>
+    <button id="backToTop" title="回到顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <header>
+        <div class="container">
+            <h1>帮助中心</h1>
+            <div class="divider"></div>
+            <p>我们在这里为您提供全方位的支持与帮助</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="two-column-layout">
+                <div class="column">
+                    
+                    <div id="help" class="card">
+                        <h2><i class="fas fa-question-circle" style="color:#3498db;"></i> 常见问题</h2>
+                        <p>有什么可以帮助您的？</p>
+                        
+                        <ul class="faq-list">
+                            <li class="faq-item">
+                                <div class="faq-question" aria-expanded="false">
+                                    <strong>网页无法加载或显示异常？</strong>
+                                    <i class="fas fa-chevron-down faq-icon"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>请尝试更换 "Chrome" 或 "Edge" 等现代浏览器打开。如果问题依旧，请清除浏览器缓存和Cookie后再次尝试。</p>
+                                </div>
+                            </li>
+                            <li class="faq-item">
+                                <div class="faq-question" aria-expanded="false">
+                                    <strong>如何快速查找我需要的AI工具？</strong>
+                                    <i class="fas fa-chevron-down faq-icon"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>您可以使用各子网页顶部的 "搜索框" 输入关键词。此外，在“AI办公工具”等页面，您还可以利用 "分类筛选" 功能。</p>
+                                </div>
+                            </li>
+                            <li class="faq-item">
+                                <div class="faq-question" aria-expanded="false">
+                                    <strong>我有一个新的AI工具想要推荐？</strong>
+                                    <i class="fas fa-chevron-down faq-icon"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>欢迎您的贡献！您可以在任何子网页找到 “推荐新工具” 按钮提交信息。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div id="news" class="card">
+                        <h2><i class="fas fa-newspaper" style="color:#e67e22;"></i> 最新AI资讯与教程</h2>
+                        
+                        <ul class="news-list">
+                            <li class="news-item">
+                                <img src="https://picsum.photos/80/60?random=1" alt="GPT-4教程" class="news-thumbnail">
+                                <div class="news-content">
+                                    <a href="#" class="news-title">如何免费使用 GPT-4？新手保姆级教程</a>
+                                    <div class="news-meta">
+                                        <span class="news-tag">教程</span>
+                                        <span>2024-03-20</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="news-item">
+                                <img src="https://picsum.photos/80/60?random=2" alt="Midjourney更新" class="news-thumbnail">
+                                <div class="news-content">
+                                    <a href="#" class="news-title">Midjourney V6 发布：图像生成质量再次飞跃，细节惊人</a>
+                                    <div class="news-meta">
+                                        <span class="news-tag">资讯</span>
+                                        <span>2024-03-18</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="news-item">
+                                <img src="https://picsum.photos/80/60?random=3" alt="AI办公技巧" class="news-thumbnail">
+                                <div class="news-content">
+                                    <a href="#" class="news-title">5个提升10倍效率的 AI 办公神器，职场人必备</a>
+                                    <div class="news-meta">
+                                        <span class="news-tag">工具推荐</span>
+                                        <span>2024-03-15</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="news-item">
+                                <img src="https://picsum.photos/80/60?random=4" alt="Sora发布" class="news-thumbnail">
+                                <div class="news-content">
+                                    <a href="#" class="news-title">OpenAI 发布 Sora：文生视频模型震撼登场，影视行业将迎巨变？</a>
+                                    <div class="news-meta">
+                                        <span class="news-tag">深度解析</span>
+                                        <span>2024-03-10</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        
+                        <a href="#" class="view-more-btn">查看更多资讯 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    
+                    <div id="feedback" class="card">
+                        <h2><i class="fas fa-envelope" style="color:#2ecc71;"></i> 给我们留言</h2>
+                        <p>请填写以下表单，我们会尽快回复您</p>
+                        
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="name">姓名</label>
+                                <input type="text" id="name" placeholder="请输入您的姓名" required>
+                                <i class="validation-icon"></i>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact">联系方式 (邮箱或电话)</label>
+                                <input type="text" id="contact" placeholder="请输入您的电话或邮箱" required>
+                                <i class="validation-icon"></i>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="type">问题类型</label>
+                                <select id="type" required>
+                                    <option value="">请选择问题类型</option>
+                                    <option value="technical">技术问题</option>
+                                    <option value="function">功能建议</option>
+                                    <option value="bug">错误报告</option>
+                                    <option value="other">其他</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">留言内容</label>
+                                <textarea id="message" rows="5" placeholder="请描述您的问题或建议" required></textarea>
+                            </div>
+                            
+                            <button type="submit"><i class="fas fa-paper-plane"></i> 提交留言</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="column">
+                    <div id="about" class="card">
+                        <h2>关于我们</h2>
+                        <p>我们是一家专注于提供高效工具和解决方案的技术公司，致力于为用户提供优质的服务体验。</p>
+                        
+                        <h3>我们的使命</h3>
+                        <p>通过创新的技术解决方案，简化工作流程，提高工作效率，让每个人都能享受科技带来的便利。</p>
+                        
+                        <h3>我们的团队</h3>
+                        <p>我们拥有一支经验丰富、技术精湛的专业团队，始终以用户需求为导向，不断优化产品和服务。</p>
+                        
+                        <h3>发展历程</h3>
+                        <p>自成立以来，我们已经服务了超过10万用户，获得了广泛的好评和认可。</p>
+                    </div>
+                    
+                    <div id="contact" class="card">
+                        <h2>联系我们</h2>
+                        <p>如果您有任何问题或建议，欢迎通过以下方式与我们取得联系：</p>
+                        
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <h4>邮箱</h4>
+                                <p>zxqs1014@163.com</p>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-clock"></i>
+                                <h4>工作时间</h4>
+                                <p>周一至周五 9:00-18:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>关于我们</h3>
+                <p>我们致力于为用户提供最优质的工具和服务，简化您的工作流程。</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <p><a href="#help" class="smooth-scroll" style="color: #ddd;">常见问题</a></p>
+                <p><a href="#news" class="smooth-scroll" style="color: #ddd;">最新资讯</a></p>
+                <p><a href="#contact" class="smooth-scroll" style="color: #ddd;">联系我们</a></p>
+                <p><a href="#feedback" class="smooth-scroll" style="color: #ddd;">给我们留言</a></p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>联系我们</h3>
+                <p>邮箱: zxqs1014@163.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 AI导航罗盘 版权所有</p>
+        </div>
+    </footer>
+    
+    <!-- 使用现有脚本文件 -->
+    <script src="script.js"></script>
+    
+    <!-- 帮助中心页面专用脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                    faqQuestions.forEach(q => {
+                        q.setAttribute('aria-expanded', 'false');
+                        q.nextElementSibling.classList.remove('active');
+                    });
+                    if (!isExpanded) {
+                        this.setAttribute('aria-expanded', 'true');
+                        this.nextElementSibling.classList.add('active');
+                    }
+                });
+            });
+            const backToTopBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                const inputs = contactForm.querySelectorAll('input, textarea, select');
+                inputs.forEach(input => {
+                    input.addEventListener('input', function() {
+                        validateField(this);
+                    });
+                });
+                contactForm.addEventListener('submit', function(e) {
+                    let isValid = true;
+                    inputs.forEach(input => {
+                        if (!validateField(input)) {
+                            isValid = false;
+                        }
+                    });
+                    
+                    if (!isValid) {
+                        e.preventDefault();
+                        alert('请先完成所有必填项');
+                    } else {
+                        e.preventDefault(); // 防止真实提交
+                        alert('感谢您的留言！我们会尽快回复您。');
+                        contactForm.reset();
+                    }
+                });
+            }
+
+            function validateField(field) {
+                const validationIcon = field.nextElementSibling;
+                if (field.validity.valid && field.value.trim() !== '') {
+                    field.classList.add('input-valid');
+                    field.classList.remove('input-invalid');
+                    return true;
+                } else {
+                    field.classList.add('input-invalid');
+                    field.classList.remove('input-valid');
+                    return false;
+                }
+            }
+
+            // 平滑滚动（用于页内导航）
+            const smoothScrollLinks = document.querySelectorAll('.smooth-scroll');
+            smoothScrollLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

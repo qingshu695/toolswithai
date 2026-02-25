@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI办公工具详情 - AI工具导航</title>
+    <link rel="icon" href="images/zhinanzhen.svg" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/subweb2.css">
+
+    <style>
+        /* ========== 基础样式（与原版保持一致）========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #e0f7fa, #bbdefb);
+            padding: 25px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #1565c0;
+            margin-bottom: 20px;
+        }
+        
+        .nav {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .nav a {
+            display: inline-block;
+            margin: 0 10px; /* 稍微缩小间距 */
+            color: #1976d2;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        
+        .nav a:hover {
+            background-color: rgba(25, 118, 210, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        /* 动态渲染卡片的新布局 */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(550px, 1fr)); /* 适应宽屏 */
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .tool-card {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-image {
+            flex: 0 0 160px; /* 缩小图片区域 */
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f9ff;
+        }
+        
+        .tool-image img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .tool-content {
+            flex: 1;
+            padding: 20px 25px; /* 调整内边距 */
+        }
+        
+        .tool-title {
+            font-size: 1.4rem; /* 调整标题大小 */
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        
+        .tool-description {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .tool-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-tag {
+            background: rgba(25, 118, 210, 0.1);
+            color: #1976d2;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .tool-link {
+            display: inline-block;
+            background: linear-gradient(to right, #2196f3, #1976d2);
+            color: white;
+            padding: 8px 20px; /* 调整按钮大小 */
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .tool-link:hover {
+            background: linear-gradient(to right, #1976d2, #1565c0);
+            box-shadow: 0 4px 10px rgba(33, 150, 243, 0.3);
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #e0f7fa, #bbdefb);
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            margin: 15px 0;
+        }
+        
+        .footer-links a {
+            color: #1976d2;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #0d47a1;
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            color: #555;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* ========== 新增交互元素样式 ========== */
+        .page-intro {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .page-intro h2 {
+            font-size: 1.8rem;
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+        .page-intro p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        #toolSearch {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            margin-top: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        #toolSearch:focus {
+            border-color: #2196f3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        /* 筛选按钮容器 */
+        .filter-controls {
+            margin: 20px auto;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        /* 筛选按钮 */
+        .filter-button {
+            background-color: #f1f1f1;
+            border: none;
+            color: #333;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 5px;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .filter-button:hover {
+            background-color: #ddd;
+        }
+
+        .filter-button.active {
+            background-color: #1976d2;
+            color: white;
+            box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3);
+        }
+
+        /* 推荐工具按钮（浮动） */
+        .recommend-tool-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #ff9800; /* 醒目的橙色 */
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 6px 15px rgba(255, 152, 0, 0.4);
+            transition: all 0.3s;
+            z-index: 100; /* 确保在最上层 */
+        }
+        .recommend-tool-btn:hover {
+            background-color: #f57c00;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.5);
+        }
+
+        /* 模态窗口 (Modal) 样式 */
+        .modal {
+            display: none; /* 默认隐藏 */
+            position: fixed; 
+            z-index: 200; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px;
+        }
+
+        /* 模态窗口内容 */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* 模态窗口动画 */
+        @keyframes animatetop {
+            from {top: -300px; opacity: 0}
+            to {top: 0; opacity: 1}
+        }
+
+        /* 关闭按钮 */
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 表单样式 */
+        .modal-content form label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #1976d2;
+        }
+        .modal-content form input[type="text"],
+        .modal-content form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .modal-content form input[type="text"]:focus,
+        .modal-content form textarea:focus {
+            border-color: #2196f3;
+            outline: none;
+        }
+        .modal-content form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .submit-btn {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            background-color: #43a047;
+        }
+        
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            .tool-card {
+                flex-direction: column;
+            }
+            .tool-image {
+                flex: none;
+                padding: 15px;
+                order: -1; /* 图片放在顶部 */
+            }
+            .tool-image img {
+                width: 100px;
+                height: 100px;
+            }
+            .tool-content {
+                padding: 20px;
+            }
+            .recommend-tool-btn {
+                right: 15px;
+                bottom: 15px;
+                padding: 10px 15px;
+            }
+        }
+        </style>  
+</head>
+<body>
+    <div class="header">
+        <h1>AI办公工具详情</h1>
+        <div class="nav">
+            <a href="index.htm">返回首页</a>
+            <a href="subweb1.html">热门推荐</a>
+            <a href="subweb2.html">AI办公工具</a>
+            <a href="subweb3.html">AI视频工具</a>
+            <a href="subweb4.html">AI搜索引擎</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="page-intro">
+            <h2>高效生产力工具集合 🚀</h2>
+            <p>这里汇集了语音转写、智能翻译、流程图绘制等 AI 办公神器，助您摆脱重复工作，专注于核心业务。</p>
+            
+            <input type="text" id="toolSearch" placeholder="搜索工具名称、功能或描述..." aria-label="搜索工具">
+
+            <div class="filter-controls">
+                <button class="filter-button active" data-filter="all">全部</button>
+                <button class="filter-button" data-filter="translate">智能翻译</button>
+                <button class="filter-button" data-filter="meeting">会议记录/转写</button>
+                <button class="filter-button" data-filter="diagram">流程图/思维导图</button>
+                <button class="filter-button" data-filter="survey">问卷/数据分析</button>
+            </div>
+        </div>
+        
+        <div class="tools-grid" id="toolsGrid">
+            </div>
+    </div>
+
+    <button class="recommend-tool-btn" id="openModalBtn">
+        <i class="fas fa-magic"></i> 推荐新工具
+    </button>
+    
+    <div id="recommendModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>推荐AI办公工具</h2>
+            <p style="color: #666; margin-bottom: 20px;">感谢您的贡献，推荐的工具经审核后会添加到本页面。</p>
+            
+            <form id="recommendForm">
+                <label for="toolName">工具名称:</label>
+                <input type="text" id="toolName" name="toolName" required>
+
+                <label for="toolUrl">工具网址 (URL):</label>
+                <input type="text" id="toolUrl" name="toolUrl" required pattern="https?://.*" title="请输入完整的网址，例如 https://www.example.com">
+
+                <label for="toolDescription">工具描述 (不超过100字):</label>
+                <textarea id="toolDescription" name="toolDescription" maxlength="100" required></textarea>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> 提交推荐
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="mailto:zxqs1014@163.com?subject=Hello%20again">联系我们</a>
+                <a href="#">版权所有</a>
+                <a href="helpcenter.html">帮助中心</a>
+                <a href="#">隐私政策</a>
+            </div>
+            <div class="copyright">
+                Copyright &copy; 鲁ICP备202431216081 鲁公安备110202431216081
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const toolsData = [
+            { 
+                name: '百度翻译', 
+                url: 'https://fanyi.baidu.com/', 
+                icon: 'images/baidufanyi.png', 
+                description: '全球领先的AI翻译平台，支持200+语种互译。采用NMT技术，提供文档翻译、实时语音翻译、拍照翻译等功能。', 
+                features: ['多语种互译', 'NMT技术', '文档翻译', '实时语音'], 
+                category: 'translate' 
+            },
+            { 
+                name: '网易见外', 
+                url: 'https://sight.youdao.com/', 
+                icon: 'images/wangyijianwai.webp', 
+                description: '网易有道推出的AI同传与会议转写平台，支持视频会议实时翻译与字幕生成，适用于跨国会议。', 
+                features: ['AI同传', '会议转写', '多语种', '字幕生成'], 
+                category: 'meeting' 
+            },
+            { 
+                name: '讯飞会议', 
+                url: 'https://meeting.iflyrec.com/', 
+                icon: 'images/xunfeihuiyi.png', 
+                description: '科大讯飞推出的智能会议解决方案，支持实时语音转写、翻译、纪要生成、角色标注，准确率高。', 
+                features: ['语音转写', '实时翻译', '会议纪要', '角色标注'], 
+                category: 'meeting' 
+            },
+            { 
+                name: '轻云图', 
+                url: 'https://cloud.yoo-ai.com/', 
+                icon: 'images/qingyuntu.jpg', 
+                description: '一款AI智能制图工具，输入文字即可一键生成专业流程图、思维导图、组织架构图等，提升汇报效率。', 
+                features: ['AI制图', '流程图', '思维导图', '团队协作'], 
+                category: 'diagram' 
+            },
+            { 
+                name: '腾讯问卷', 
+                url: 'https://wj.qq.com/', 
+                icon: 'images/Tencentwenjuan.webp', 
+                description: '腾讯出品的专业在线问卷调研平台，内置AI智能设计助手，可自动生成问卷题目、逻辑跳转、数据分析报告。', 
+                features: ['AI问卷设计', '数据分析', '逻辑跳转', '微信发布'], 
+                category: 'survey' 
+            },
+            { 
+                name: '钉钉AI', 
+                url: 'https://www.dingtalk.com/', 
+                icon: 'images/dingding.webp', 
+                description: '阿里钉钉内嵌的AI助理，提供智能总结会议、撰写邮件、起草报告、分析数据等一站式办公能力。', 
+                features: ['会议总结', '智能写作', '数据分析', '移动办公'], 
+                category: 'meeting' 
+            },
+            { 
+                name: 'WPS AI', 
+                url: 'https://www.wps.cn/', 
+                icon: 'images/wpsai.webp', 
+                description: '深度集成在 WPS 办公套件中的 AI 功能，可辅助写作、美化 PPT、进行表格数据处理和分析。', 
+                features: ['文档写作', 'PPT美化', '表格分析', '深度集成'], 
+                category: 'writing' 
+            }
+        ];
+
+        let currentFilter = 'all'; // 记录当前的筛选状态
+
+        const toolsGrid = document.getElementById('toolsGrid');
+        const toolSearchInput = document.getElementById('toolSearch');
+        const filterButtons = document.querySelectorAll('.filter-button');
+        const recommendModal = document.getElementById('recommendModal');
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.querySelector('.close-btn');
+        const recommendForm = document.getElementById('recommendForm');
+
+        // ===================================
+        // 2. 工具卡片渲染和筛选逻辑
+        // ===================================
+
+        function renderTools(tools) {
+            toolsGrid.innerHTML = ''; 
+            
+            if (tools.length === 0) {
+                toolsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #777; font-size: 1.2rem; padding: 50px 0;">未找到相关工具，请尝试其他关键词或筛选条件。</p>';
+                return;
+            }
+
+            tools.forEach(tool => {
+                const featuresHtml = tool.features.map(tag => 
+                    `<span class="feature-tag">${tag}</span>`
+                ).join('');
+
+                const card = document.createElement('div');
+                card.className = 'tool-card';
+                card.innerHTML = `
+                    <div class="tool-image">
+                        <a href="${tool.url}" target="_blank">
+                            <img src="${tool.icon}" alt="${tool.name}">
+                        </a>
+                    </div>
+                    <div class="tool-content">
+                        <h2 class="tool-title">${tool.name}</h2>
+                        <p class="tool-description">
+                            ${tool.description}
+                        </p>
+                        <div class="tool-features">
+                            ${featuresHtml}
+                        </div>
+                        <a href="${tool.url}" target="_blank" class="tool-link">
+                           <i class="fas fa-external-link-alt"></i> 立即使用
+                        </a>
+                    </div>
+                `;
+                toolsGrid.appendChild(card);
+            });
+        }
+
+        /**
+         * 筛选工具列表并重新渲染。
+         */
+        function filterTools() {
+            const searchTerm = toolSearchInput.value.toLowerCase().trim();
+            
+            const filteredTools = toolsData.filter(tool => {
+                // 1. 按分类筛选 (如果当前筛选不是 'all')
+                const categoryMatch = (currentFilter === 'all' || tool.category === currentFilter);
+
+                // 如果分类不匹配，直接跳过
+                if (!categoryMatch) return false;
+
+                // 2. 按搜索词筛选（名称、描述、功能标签）
+                if (searchTerm === '') return true; 
+                
+                const nameMatch = tool.name.toLowerCase().includes(searchTerm);
+                const descriptionMatch = tool.description.toLowerCase().includes(searchTerm);
+                const tagMatch = tool.features.some(feature => 
+                    feature.toLowerCase().includes(searchTerm)
+                );
+
+                return nameMatch || descriptionMatch || tagMatch;
+            });
+
+            renderTools(filteredTools);
+        }
+        function setActiveFilter(filter) {
+            currentFilter = filter;
+            
+            // 更新按钮的 active 状态
+            filterButtons.forEach(button => {
+                if (button.getAttribute('data-filter') === filter) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+
+            // 触发筛选
+            filterTools();
+        }
+
+        // ===================================
+        // 3. 模态窗口和表单交互逻辑
+        // ===================================
+
+        function openModal() {
+            recommendModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // 禁用背景滚动
+        }
+
+        function closeModal() {
+            recommendModal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // 恢复背景滚动
+        }
+
+        function handleToolSubmission(event) {
+            event.preventDefault(); // 阻止表单默认提交行为 
+
+            // 获取表单数据
+            const toolName = document.getElementById('toolName').value.trim();
+            const toolUrl = document.getElementById('toolUrl').value.trim();
+            const toolDescription = document.getElementById('toolDescription').value.trim();
+
+            if (!toolName || !toolUrl || !toolDescription) {
+                alert('请填写所有必填字段！');
+                return;
+            }
+
+            // 【重要】此处是提交给后端的模拟逻辑
+            console.log('提交的新工具推荐：', {
+                name: toolName,
+                url: toolUrl,
+                description: toolDescription
+            });
+
+            alert(`🎉 推荐成功！\n工具名称: ${toolName}\n感谢您的贡献，我们将会尽快审核并添加！`);
+            
+            recommendForm.reset(); // 清空表单
+            closeModal();
+        }
+
+        // ===================================
+        // 4. 事件监听器绑定
+        // ===================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始渲染所有工具
+            renderTools(toolsData);
+            
+            // 绑定搜索框的输入事件
+            toolSearchInput.addEventListener('input', filterTools);
+
+            // 绑定筛选按钮的点击事件
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const filter = button.getAttribute('data-filter');
+                    setActiveFilter(filter);
+                });
+            });
+
+            // 绑定模态窗口打开/关闭事件
+            openModalBtn.addEventListener('click', openModal);
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // 点击模态窗口外部区域关闭
+            window.addEventListener('click', (event) => {
+                if (event.target === recommendModal) {
+                    closeModal();
+                }
+            });
+
+            // 绑定表单提交事件
+            recommendForm.addEventListener('submit', handleToolSubmission);
+        });
+    </script>
+</body>
+</html>
