@@ -551,24 +551,17 @@
             overflow: hidden;
         }
 
-        .header-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-color);
-            z-index: -2;
-        }
+        
         header h1 {
     font-size: 3.5rem;
     font-weight: 900;
-    margin-bottom: 0.5rem;
-    letter-spacing: -1px;
+    margin-bottom: 12px;
+    letter-spacing: -2px;
     
     /* 修改这里：不再使用透明裁剪，直接引用主色变量 */
     color: var(--primary-color); 
-    background: none !important;
+    background: var(--bg-color);
+
     -webkit-background-clip: initial !important;
     -webkit-text-fill-color: initial !important;
 }
@@ -623,17 +616,19 @@
             background: var(--card-bg);
             border-radius: 14px;
             padding: 10px 6px 10px 12px;
-            box-shadow: var(--search-box-shadow);
+            box-shadow: 
+                    0 10px 25px -5px rgba(0, 0, 0, 0.05),
+                    0 8px 10px -6px rgba(0, 0, 0, 0.05),
+                    inset 0 0 20px rgba(255, 255, 255, 0.5);
             border: 1px solid #cbd5e1;
             transition: all 0.18s ease;
         }
-
         .modern-search-form:hover,
         .modern-search-form:focus-within {
-            transform: none;
-            box-shadow: var(--search-box-focus-shadow);
-            border-color: rgba(71, 11, 18, 0.06);
-        }
+        transform: translateY(-2px); /* 浮起感 */
+    box-shadow: 0 20px 25px -5px rgba(71, 11, 18, 0.1);
+    border: 1px solid var(--primary-color);
+}
 
         /* 搜索下方的对话 AI 条 */
         .chat-item {
@@ -797,17 +792,19 @@
             border: 1px solid var(--card-border);
             padding: 10px;
             text-decoration: none;
-            transition: all 0.18s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             min-height: 56px;
             flex-wrap: nowrap;
         }
 
         .tool-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
-            border-color: rgba(71, 11, 18, 0.08);
-        }
+    transform: translateY(-6px); /* 向上浮起 */
+    background: #fff;
+    box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.08), 
+        0 10px 10px -5px rgba(0, 0, 0, 0.03);
+}
 
         /* 左侧图标：统一尺寸，略带圆角（方便支持方形/圆形图标） */
         .tool-card img {
