@@ -26,7 +26,6 @@
             --tag-text-color: #475569;
             --tag-border: #e2e8f0;
             --footer-bg: #fff;
-
             --carousel-indicator-active: var(--primary-color);
             --carousel-indicator-bg: rgba(255, 255, 255, 0.6);
             --carousel-btn-bg: rgba(0, 0, 0, 0.4);
@@ -35,7 +34,9 @@
             --search-box-shadow: none;
             --search-box-focus-shadow:none;
         }
+        /* --- 插入开始：侧边栏核心布局 --- */
 
+/* --- 插入结束 --- */
         /* 深色模式颜色优化 */
 .dark-mode {
     --bg-color: #0f172a;        /* 深蓝灰背景，比纯黑更高级 */
@@ -94,11 +95,23 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 0 20px;
         }
+/* 当屏幕宽度大于 1400px 时，内容区变宽 */
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1320px;
+    }
+}
 
+/* 当屏幕宽度大于 1900px（如 2K 屏）时，内容区进一步变宽 */
+@media (min-width: 1920px) {
+    .container {
+        max-width: 1600px;
+    }
+}
         /* ========== 1. 顶部全局导航栏 ========== */
         .global-navbar {
             width: 100%;
@@ -596,7 +609,7 @@
 
         .modern-search-wrapper {
             position: relative;
-            max-width: 550px;
+            max-width: 700px;
             margin: 0 auto 10px;
             z-index: 2;
         }
@@ -671,7 +684,7 @@
             flex: 1;
             border: none;
             background: transparent;
-            padding: 14px 8px;
+            padding: 10px 8px;
             font-size: 1.05rem;
             color: var(--text-color);
             outline: none;
@@ -868,6 +881,10 @@
         .badge-freemium {
             background: #f5f3ff;
             color: #7c3aed;
+        }
+        .badge-foreign{
+            background: #e0f2fe;
+            color: #0284c7;
         }
 
         .badge-new {
@@ -1195,7 +1212,6 @@
 <script defer src="https://tinymetrics.io/tm.js"></script>
 
 <body>
-
     <nav class="global-navbar">
         <div class="nav-container">
             <a href="#" class="logo">
@@ -1493,7 +1509,6 @@
                     <input type="text" class="modern-search-input" id="" name="q" placeholder="搜索AI工具，例如：Midjourney..."
                         aria-label="搜索AI工具">
                     <button type="submit" class="modern-search-btn">
-                        <span>Go</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </form>
@@ -1506,129 +1521,133 @@
             <section class="tools-section" id="hot">
                 <a href="/subweb1.html" class="section-title" target="_blank">热门推荐</a>
                 <div class="tools-grid">
+                                        <a href="https://chat.openai.com/" target="_blank" class="tool-card">
+                        <img src="images/ChatGPT.svg" alt="ChatGPT" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">ChatGPT<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">OpenAI的对话式大模型</div>
+                        </div>
+                    </a>
+                    <a href="https://gemini.google.com" target="_blank" class="tool-card">
+                        <img src="images/gemini-ai.svg" alt="Gemini" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Gemini<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">面向营销和内容创作的最强AI平台</div>
+                        </div>
+                    </a>
+                    <a href="https://claude.ai/" target="_blank" class="tool-card">
+                        <img src="images/Claude.svg" alt="Claude" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Claude<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">Anthropic出品的对话与写作助手,安全可靠</div>
+                        </div>
+                    </a>
+                    <a href="https://grok.com/" target="_blank" class="tool-card">
+                        <img src="images/grok.png" alt="Grok" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Grok<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">Elon Musk推出的AI助手</div>
+                        </div>
+                    </a>
+                    <a href="https://cursor.com/cn/dashboard" target="_blank" class="tool-card">
+                        <img src="images/cursor.webp" alt="Cursor" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Cursor<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">AI代码编辑器，支持多语言开发</div>
+                        </div>
+                    </a>
+                    <a href="https://www.chatopens.com/Web/List.html" target="_blank" class="tool-card">
+                        <img src="images/Dall-e.jpg" alt="chatopens" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">CHATOPENS<span class="mini-badge badge-foreign">镜像</span></div>
+                            <div class="tool-desc">免梯直达海外AI工具官网</div>
+                        </div>
+                    </a>
+                    <a href="https://chat.deepseek.com/" target="_blank" class="tool-card">
+                        <img src="images/deepseek.svg" alt="deepseek" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">deepseek<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">深度求索AI在线平台,提供强大的AI模型</div>
+                        </div>
+                    </a>
+                    
                     <a href="https://www.doubao.com/" target="_blank" class="tool-card">
                         <img src="images/doubao.svg" alt="豆包" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">豆包<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">字节跳动AI助手，简单好用的智能伙伴。</div>
-                        </div>
-                    </a>
-                    <a href="https://www.deepseek.com/" target="_blank" class="tool-card">
-                        <img src="images/deepseek.svg" alt="deepseek" loading="lazy">
-                        <div class="tool-info">
-                            <div class="tool-name">deepseek<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">深度求索AI在线平台,提供强大的AI模型。</div>
+                            <div class="tool-desc">字节跳动AI助手，简单好用的智能伙伴</div>
                         </div>
                     </a>
                     <a href="https://www.qianwen.com/" target="_blank" class="tool-card">
                         <img src="images/tongyi.svg" alt="通义千问" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">通义千问<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">阿里云大语言模型，全能型AI助手。</div>
-                        </div>
-                    </a>
-                    <a href="https://yuanbao.tencent.com" target="_blank" class="tool-card">
-                        <img src="images/tengxun.svg" alt="腾讯元宝" loading="lazy">
-                        <div class="tool-info">
-                            <div class="tool-name">腾讯元宝<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">腾讯智能助手，依托混元大模型。</div>
-                        </div>
-                    </a>
-                    <a href="https://chat.openai.com/" target="_blank" class="tool-card">
-                        <img src="images/ChatGPT.svg" alt="ChatGPT" loading="lazy">
-                        <div class="tool-info">
-                            <div class="tool-name">ChatGPT<span class="mini-badge badge-paid">付费</span></div>
-                            <div class="tool-desc">OpenAI的对话式大模型</div>
+                            <div class="tool-desc">阿里云大语言模型，全能型AI助手</div>
                         </div>
                     </a>
                     <a href="https://www.kimi.com/" target="_blank" class="tool-card">
                         <img src="images/kimi-icon.svg" alt="Kimi" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">Kimi<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">月之暗面智能助手</div>
+                            <div class="tool-desc">月之暗面智能助手，擅长处理超长上下文</div>
                         </div>
                     </a>
-                    <a href="https://wenxin.baidu.com/" target="_blank" class="tool-card">
+                    <a href="https://yuanbao.tencent.com" target="_blank" class="tool-card">
+                        <img src="images/tengxun.svg" alt="腾讯元宝" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">腾讯元宝<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">腾讯智能助手，依托混元大模型</div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://yiyan.baidu.com/" target="_blank" class="tool-card">
                         <img src="images/wenxinyiyan.svg" alt="文心一言" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">文心一言<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">百度全新一代知识增强大语言模型。</div>
+                            <div class="tool-desc">国内功能超全，生态扎实的全能型大模型。</div>
                         </div>
                     </a>
-                    <a href="https://www.coze.cn/" target="_blank" class="tool-card">
-                        <img src="images/coze.png" alt="Coze" loading="lazy">
+                    
+                    <a href="https://seed.bytedance.com/en/seedance2_0" target="_blank" class="tool-card">
+                        <img src="images/Seedance.svg" alt="seedance2.0" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Coze<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">字节跳动AI Bot开发平台，快速创建Bot。</div>
+                            <div class="tool-name">Seedance2.0<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">输入指令即可产出电影级大片</div>
                         </div>
                     </a>
-                    <a href="https://cursor.sh/" target="_blank" class="tool-card">
-                        <img src="images/cursor.webp" alt="Coze" loading="lazy">
+                    <a href="https://app.klingai.com/cn/" target="_blank" class="tool-card">
+                        <img src="images/keling.svg" alt="可灵" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Cursor<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">AI驱动的代码编辑器，支持智能代码生成和编辑。</div>
+                            <div class="tool-name">可灵<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">可灵是快手推出的AI视频生成工具</div>
                         </div>
                     </a>
-                    <a href="https://www.klingai.com/" target="_blank" class="tool-card">
-                        <img src="images/keling.svg" alt="Coze" loading="lazy">
+                    <a href="https://app.pixverse.ai/onboard" target="_blank" class="tool-card">
+                        <img src="images/Pixverse.svg" alt="pixverse" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">可灵AI<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">可灵AI是腾讯推出的一站式AI创作平台,支持视频等多种内容创作。</div>
+                            <div class="tool-name">PixVerse<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">爱诗科技推出的AI 视频生成平台</div>
                         </div>
                     </a>
-                </div>
-            </section>
-            <section class="tools-section" id="foreign">
-                <a href="#" class="section-title" target="_blank">国外热门AI</a>
-                <div class="tools-grid">
-                    <a href="https://chat.openai.com/" target="_blank" class="tool-card">
-                        <img src="images/ChatGPT.svg" alt="ChatGPT" loading="lazy">
+                    <a href="https://www.vidu.cn/" target="_blank" class="tool-card">
+                        <img src="images/Vidu.svg" alt="vidu" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">ChatGPT<span class="mini-badge badge-paid">付费</span></div>
-                            <div class="tool-desc">OpenAI的对话式大模型</div>
+                            <div class="tool-name">Vidu<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">Vidu是基于AI的视频生成平台，支持多种视频创作功能</div>
                         </div>
                     </a>
-                    <a href="https://www.groks.ai/" target="_blank" class="tool-card">
-                        <img src="images/grok.png" alt="Grok" loading="lazy">
+                    <a href="https://hailuoai.com/" target="_blank" class="tool-card">
+                        <img src="images/hailuo.webp" alt="海螺AI" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Grok<span class="mini-badge badge-new">新工具</span></div>
-                            <div class="tool-desc">Elon Musk推出的AI助手</div>
+                            <div class="tool-name">海螺AI<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">MiniMax 旗下多模态全能选手</div>
                         </div>
                     </a>
-                    <a href="https://gemini.google.com" target="_blank" class="tool-card">
-                        <img src="images/gemini-ai.svg" alt="Gemini" loading="lazy">
+                    <a href="https://chatglm.cn/main/alltoolsdetail?lang=zh" target="_blank" class="tool-card">
+                        <img src="images/zhipu.svg" alt="智谱AI" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Gemini<span class="mini-badge badge-new">新工具</span></div>
-                            <div class="tool-desc">面向营销和内容创作的最强AI平台</div>
-                        </div>
-                    </a>
-                    <a href="https://www.anthropic.com/" target="_blank" class="tool-card">
-                        <img src="images/Claude.svg" alt="Claude" loading="lazy">
-                        <div class="tool-info">
-                            <div class="tool-name">Claude<span class="mini-badge badge-new">新工具</span></div>
-                            <div class="tool-desc">Anthropic出品的对话与写作助手,安全可靠。</div>
-                        </div>
-                    </a>
-                    <a href="https://bard.google.com/" target="_blank" class="tool-card">
-                        <img src="images/bard.svg" alt="Bard" loading="lazy">
-                        <div class="tool-info">
-                            <div class="tool-name">Bard<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">Google对话型AI,擅长搜索类知识与生成类任务。</div>
-                        </div>
-                    </a>
-
-                    <a href="https://www.perplexity.ai/" target="_blank" class="tool-card">
-                        <img src="images/perplexity.svg" alt="Perplexity" loading="lazy">
-                        <div class="tool-info">
-                            <div class="tool-name">Perplexity<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">面向事实检索与对话的混合型搜索助手,回答带来源引用。</div>
-                        </div>
-                    </a>
-                    <a href="https://www.midjourney.com/" target="_blank" class="tool-card">
-                        <img src="images/MidJourney.svg"Midjourney" loading="lazy">
-                        <div class="tool-info">
-                            <div class="tool-name">Midjourney<span class="mini-badge badge-paid">付费</span></div>
-                            <div class="tool-desc">生成式图像工具,擅长艺术风格与高质量视觉输出。</div>
+                            <div class="tool-name">智谱AI<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">智谱AI平台，提供多种AI工具和服务</div>
                         </div>
                     </a>
                 </div>
@@ -1640,42 +1659,56 @@
                         <img src="images/Bing.svg" alt="Bing AI" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">Bing AI<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">微软AI增强搜索，集成GPT-4能力。</div>
+                            <div class="tool-desc">微软AI增强搜索，集成GPT-4能力</div>
+                        </div>
+                    </a>
+                    <a href="https://www.perplexity.ai/" target="_blank" class="tool-card">
+                        <img src="images/perplexity.svg" alt="Perplexity" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Perplexity<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">面向事实检索与对话的混合型搜索助手,回答带来源引用</div>
                         </div>
                     </a>
                     <a href="https://ai.quark.cn/" target="_blank" class="tool-card">
                         <img src="images/kuake.svg" alt="夸克AI" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">夸克AI<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">智能搜索与问答，提供更精准的答案。</div>
+                            <div class="tool-desc">智能搜索与问答，提供更精准的答案</div>
                         </div>
                     </a>
                     <a href="https://think.baidu.com/" target="_blank" class="tool-card">
                         <img src="images/baidu.svg" alt="百度AI探索版" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">百度AI探索版<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">百度智能搜索，对话式获取信息。</div>
+                            <div class="tool-desc">百度智能搜索，对话式获取信息</div>
                         </div>
                     </a>
                     <a href="https://www.sou.com/" target="_blank" class="tool-card">
                         <img src="images/nami.svg" alt="纳米搜索" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">纳米搜索<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">AI驱动的搜索引擎，无广告干扰。</div>
+                            <div class="tool-desc">AI驱动的搜索引擎，无广告干扰</div>
                         </div>
                     </a>
                     <a href="https://metaso.cn/" target="_blank" class="tool-card">
                         <img src="images/mitaai.jpg" alt="秘塔搜索" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">秘塔搜索<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">新一代AI搜索引擎，深入理解用户意图。</div>
+                            <div class="tool-desc">新一代AI搜索引擎，深入理解用户意图</div>
                         </div>
                     </a>
                     <a href="https://www.zhihu.com/ai" target="_blank" class="tool-card">
                         <img src="images/zhihu.svg" alt="知乎直答" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">知乎直答<span class="mini-badge badge-new">新工具</span></div>
-                            <div class="tool-desc">知乎推出的AI问答工具，提供更精准的答案。</div>
+                            <div class="tool-desc">知乎推出的AI问答工具，提供更精准的答案</div>
+                        </div>
+                    </a>
+                    <a href="https://www.tiangong.cn/" target="_blank" class="tool-card">
+                        <img src="images/tiangong.svg" alt="天工AI" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">天工AI<span class="mini-badge badge-new">新工具</span></div>
+                            <div class="tool-desc">天工AI是昆仑万维推出的双千亿级大语言模型</div>
                         </div>
                     </a>
                 </div>
@@ -1687,71 +1720,78 @@
                     <a href="https://sora.ai/" target="_blank" class="tool-card">
                         <img src="images/Sora.svg" alt="sora" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">sora<span class="mini-badge badge-freemium">免费+</div>
-                            <div class="tool-desc">OpenAI 开发的视频生成工具，支持文本到视频的转换。</div>
+                            <div class="tool-name">sora<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">OpenAI 开发的视频生成工具，支持文本到视频的转换</div>
                         </div>
                     </a>
                     <a href="https://zenvideo.qq.com/" target="_blank" class="tool-card">
                         <img src="images/zenvideo.svg" alt="腾讯智影" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">腾讯智影<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">智能视频创作平台，支持数字人播报。</div>
+                            <div class="tool-desc">智能视频创作平台，支持数字人播报</div>
+                        </div>
+                    </a>
+                    <a href="https://www.google.com/ai/video" target="_blank" class="tool-card">
+                        <img src="images/google.svg" alt="google vids" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Google vids<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">Google推出的AI视频生成工具，支持从文本生成视频</div>
                         </div>
                     </a>
                     <a href="https://aigc.baidu.com/" target="_blank" class="tool-card">
                         <img src="images/dujia.png" alt="度加创作" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">度加创作<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">百度AI视频创作工具，文章一键转视频。</div>
+                            <div class="tool-desc">百度AI视频创作工具，文章一键转视频</div>
                         </div>
                     </a>
                     <a href="https://hifly.cc/" target="_blank" class="tool-card">
                         <img src="images/feiying.png" alt="飞影数字人" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">飞影数字人<span class="mini-badge badge-paid">付费</span></div>
-                            <div class="tool-desc">AI数字人视频生成，口型精准匹配。</div>
+                            <div class="tool-desc">AI数字人视频生成，口型精准匹配</div>
                         </div>
                     </a>
                     <a href="https://runwayml.com/" target="_blank" class="tool-card">
                         <img src="images/runway.svg" alt="Runway ML" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">Runway ML<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">功能全面的AI视频编辑平台，支持绿幕抠像和风格转换。</div>
+                            <div class="tool-desc">功能全面的AI视频编辑平台，支持绿幕抠像和风格转换</div>
                         </div>
                     </a>
                     <a href="https://pika.art/" target="_blank" class="tool-card">
                         <img src="images/pika.jpg" alt="Pika" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Pika<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">AI驱动的视频生成工具，可从文本或图像生成视频。</div>
+                            <div class="tool-name">Pika<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">AI驱动的视频生成工具，可从文本或图像生成视频</div>
                         </div>
                     </a>
                     <a href="https://kaiber.ai/" target="_blank" class="tool-card">
                         <img src="images/kaiber.png" alt="Kaiber" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Kaiber<span class="mini-badge badge-paid">付费</span></div>
-                            <div class="tool-desc">AI视频生成平台，可将静态图像转换为动态视频。</div>
+                            <div class="tool-name">Kaiber<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">AI视频生成平台，可将静态图像转换为动态视频</div>
                         </div>
                     </a>
                     <a href="https://lumen5.com/" target="_blank" class="tool-card">
                         <img src="images/Lumen5.jpg" alt="Lumen5" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Lumen5<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">智能视频制作平台，博客文章一键转视频。</div>
+                            <div class="tool-name">Lumen5<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">智能视频制作平台，博客文章一键转视频</div>
                         </div>
                     </a>
                     <a href="https://synthesia.io/" target="_blank" class="tool-card">
                         <img src="images/synthesia.jpg" alt="Synthesia" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Synthesia<span class="mini-badge badge-paid">付费</span></div>
-                            <div class="tool-desc">企业级AI虚拟人视频制作平台，支持多语言。</div>
+                            <div class="tool-name">Synthesia<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">企业级AI虚拟人视频制作平台，支持多语言</div>
                         </div>
                     </a>
                     <a href="https://www.heygen.com/" target="_blank" class="tool-card">
                         <img src="images/heygen.png" alt="Heygen" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Heygen<span class="mini-badge badge-paid">付费</span></div>
-                            <div class="tool-desc">AI虚拟人视频生成平台，支持多种风格和语言。</div>
+                            <div class="tool-name">Heygen<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">AI虚拟人视频生成平台，支持多种风格和语言</div>
                         </div>
                     </a>
                     <a href="https://www.hailuoai.com/" target="_blank" class="tool-card">
@@ -1759,6 +1799,20 @@
                         <div class="tool-info">
                             <div class="tool-name">海螺视频<span class="mini-badge badge-free">免费</span></div>
                             <div class="tool-desc">AI虚拟人视频生成平台，支持多种风格和语言。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.klingai.com/" target="_blank" class="tool-card">
+                        <img src="images/keling.svg" alt="Coze" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">可灵AI<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">可灵AI是腾讯推出的一站式AI创作平台,支持视频等多种内容创作</div>
+                        </div>
+                    </a>
+                    <a href="https://app.pixverse.ai/onboard" target="_blank" class="tool-card">
+                        <img src="images/Pixverse.svg" alt="pixverse" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">PixVerse<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">Create amazing videos</div>
                         </div>
                     </a>
                 </div>
@@ -1770,63 +1824,70 @@
                         <img src="images/MidJourney.svg" alt="Midjourney" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">Midjourney<span class="mini-badge badge-paid">付费</span></div>
-                            <div class="tool-desc">行业顶尖AI图像生成工具，画质惊艳，社区活跃。</div>
+                            <div class="tool-desc">行业顶尖AI图像生成工具，画质惊艳，社区活跃</div>
                         </div>
                     </a>
                     <a href="https://stability.ai/" target="_blank" class="tool-card">
                         <img src="images/stable-diffusion.svg" alt="Stable Diffusion" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Stable Diffusion<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">强大的开源AI图像生成模型，可本地部署，高度可定制。</div>
+                            <div class="tool-name">Stable Diffusion<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">强大的开源AI图像生成模型，可本地部署，高度可定制</div>
                         </div>
                     </a>
                     <a href="https://www.canva.com/features/ai/" target="_blank" class="tool-card">
                         <img src="images/canva.webp" alt="Canva AI" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Canva AI<span class="mini-badge badge-freemium">设计</span></div>
-                            <div class="tool-desc">Canva的AI助手支持一键排版、图片生成与设计智能化输出，适合内容创作者。</div>
+                            <div class="tool-name">Canva AI<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">Canva的AI助手支持一键排版、图片生成与设计智能化输出，适合内容创作者</div>
                         </div>
                     </a>
                     <a href="https://openai.com/dall-e" target="_blank" class="tool-card">
                         <img src="images/Dall-e.jpg" alt="DALL-E" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">DALL-E<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">OpenAI推出的AI图像生成器，创意独特，操作简单。</div>
+                            <div class="tool-name">DALL-E<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">OpenAI推出的AI图像生成器，创意独特，操作简单</div>
+                        </div>
+                    </a>
+                    <a href="https://www.duiyou.com/" target="_blank" class="tool-card">
+                        <img src="images/duiyou.svg" alt="堆友" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">堆友<span class="mini-badge badge-freemium">免费</span></div>
+                            <div class="tool-desc">阿里AI图像生成与编辑的在线工具，适合快速创作</div>
                         </div>
                     </a>
                     <a href="https://www.jimengai.com/" target="_blank" class="tool-card">
                         <img src="images/jimeng.svg" alt="即梦AI" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">即梦AI<span class="mini-badge badge-new">新工具</span></div>
-                            <div class="tool-desc">字节跳动推出的AI图像与视频生成工具。</div>
+                            <div class="tool-desc">字节跳动推出的AI图像与视频生成工具</div>
                         </div>
                     </a>
                     <a href="https://www.bing.com/images/create" target="_blank" class="tool-card">
                         <img src="images/Bing.svg" alt="Bing Image Creator" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Bing Image Creator<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">基于DALL-E 3的微软图像生成工具，免费使用。</div>
+                            <div class="tool-name">Bing Image Creator<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">基于DALL-E 3的微软图像生成工具，免费使用</div>
                         </div>
                     </a>
                     <a href="https://ideogram.ai/" target="_blank" class="tool-card">
                         <img src="images/Ideogram.svg" alt="Ideogram" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Ideogram<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">擅长生成带文字的图像，适合海报和社交媒体内容。</div>
+                            <div class="tool-name">Ideogram<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">擅长生成带文字的图像，适合海报和社交媒体内容</div>
                         </div>
                     </a>
                     <a href="https://playgroundai.com/" target="_blank" class="tool-card">
                         <img src="images/playgroundai.png" alt="Playground AI" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Playground AI<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">用户友好的AI图像生成平台，每日免费额度充足。</div>
+                            <div class="tool-name">Playground AI<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">用户友好的AI图像生成平台，每日免费额度充足</div>
                         </div>
                     </a>
                     <a href="https://deepai.org/" target="_blank" class="tool-card">
                         <img src="images/deep.png" alt="DeepAI" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">DeepAI<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">提供多种AI艺术生成工具，包括图像和动图。</div>
+                            <div class="tool-name">DeepAI<span class="mini-badge badge-foreign">海外</span></div>
+                            <div class="tool-desc">提供多种AI艺术生成工具，包括图像和动图</div>
                         </div>
                     </a>
                     <a href="https://wanxiang.aliyun.com/" target="_blank" class="tool-card">
@@ -1841,6 +1902,13 @@
                         <div class="tool-info">
                             <div class="tool-name">LibLib<span class="mini-badge badge-free">免费</span></div>
                             <div class="tool-desc">国内最大的 AI 原生图像生成工具、原创模型共享社区与创作平台</div>
+                        </div>
+                    </a>
+                    <a href="https://www.wanxiang.art/" target="_blank" class="tool-card">
+                        <img src="images/wanxiangyingzao.svg" alt="万象营造" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">万象营造<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">通义实验室推出的AI图像生成工具，支持多种风格和场景</div>
                         </div>
                     </a>
                 </div>
@@ -1865,11 +1933,17 @@
                             <div class="tool-desc">在线 IDE 内置的 AI 编程助手，支持代码生成、修复与解释。</div>
                         </div>
                     </a>
-
+                    <a href="https://cursor.sh/" target="_blank" class="tool-card">
+                        <img src="images/cursor.webp" alt="Coze" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Cursor<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">AI驱动的代码编辑器，支持智能代码生成和编辑。</div>
+                        </div>
+                    </a>
                     <a href="https://www.tabnine.com/" target="_blank" class="tool-card">
                         <img src="images/tabnine.svg" alt="Tabnine" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Tabnine<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-name">Tabnine<span class="mini-badge badge-freemium">免费+</span></div>
                             <div class="tool-desc">基于模型的代码补全工具，支持多语言与私有部署。</div>
                         </div>
                     </a>
@@ -1895,11 +1969,25 @@
                             <div class="tool-desc">Trae 是一个免费的 AI 写作助手，支持多种语言和写作场景。</div>
                         </div>
                     </a>
+                    <a href="https://ai.csdn.net/chat/" target="_blank" class="tool-card">
+                        <img src="images/czhidao.svg" alt="C知道" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">C知道<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">C知道是基于csdn的智能问答平台，提供专业领域的知识问答服务。</div>
+                        </div>
+                    </a>
                     <a href="https://tongyi.aliyun.com/lingma" target="_blank" class="tool-card">
                         <img src="images/tongyilingma.jpg" alt="通义灵码" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">通义灵码<span class="mini-badge badge-free">免费</span></div>
                             <div class="tool-desc">企业级合规首选，阿里云生态无缝对接</div>
+                        </div>
+                    </a>
+                    <a href="https://about.gitlab.com/gitlab-duo/" target="_blank" class="tool-card">
+                        <img src="images/gitlab.svg" alt="Gitlab Duo" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Gitlab Duo<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">GitLab Duo是GitLab推出的AI辅助开发工具，提供代码生成与智能提示功能。</div>
                         </div>
                     </a>
                     <a href="https://comate.baidu.com/zh/chat" target="_blank" class="tool-card">
@@ -1945,15 +2033,22 @@
                     <a href="https://meeting.iflyrec.com/" target="_blank" class="tool-card">
                         <img src="images/xunfeihuiyi.png" alt="讯飞会议" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">讯飞会议<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-name">讯飞会议<span class="mini-badge badge-freemium">免费+</span></div>
                             <div class="tool-desc">智能会议记录工具，实时语音转文字。</div>
                         </div>
                     </a>
                     <a href="https://www.wps.com/ai" target="_blank" class="tool-card">
                         <img src="images/wpsai.svg" alt="WPS AI" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">WPS<span class="mini-badge badge-paid">付费</span></div>
+                            <div class="tool-name">WPS<span class="mini-badge badge-freemium">免费+</span></div>
                             <div class="tool-desc">WPS旗下AI软件</div>
+                        </div>
+                    </a>
+                    <a href="https://fanyi.sogou.com/" target="_blank" class="tool-card">
+                        <img src="images/sougou.svg" alt="搜狗翻译" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">搜狗翻译<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">搜狗旗下AI翻译软件</div>
                         </div>
                     </a>
                     <a href="https://cloud.yoo-ai.com/" target="_blank" class="tool-card">
@@ -1977,6 +2072,27 @@
                             <div class="tool-desc">通义实验室推出的AI写作助手，帮助用户快速生成高质量内容。</div>
                         </div>
                     </a>
+                    <a href="https://www.fazhi.law/law-saas/gpt" target="_blank" class="tool-card">
+                        <img src="images/fazhi.png" alt="法智" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">法智<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">AI法律咨询助手，提供法律文书生成与智能问答服务。</div>
+                        </div>
+                    </a>
+                    <a href="https://xmind.com/ai" target="_blank" class="tool-card">
+                        <img src="images/xmind.svg" alt="Xmind" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Xmind<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">Xmind是一款思维导图工具，支持AI辅助生成思维导图。</div>
+                        </div>
+                    </a>
+                    <a href="https://gw.iflydocs.com/" target="_blank" class="tool-card">
+                        <img src="images/xunfeiwenshu.svg" alt="讯飞文书" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">讯飞文书<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">科大讯飞旗下的AI文书生成办公工具</div>
+                        </div>
+                    </a>
                 </div>
             </section>
             <section class="tools-section" id="academic">
@@ -1989,7 +2105,20 @@
                             <div class="tool-desc">面向科研人员的智能文献检索、引用网络与推荐分析。</div>
                         </div>
                     </a>
-
+                    <a href="https://www.kaggle.com/" target="_blank" class="tool-card">
+                        <img src="images/kaggle.svg" alt="Kaggle" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Kaggle<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">全球最大的数据科学社区，提供数据集、竞赛和学习资源。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.aminer.cn/v2/research" target="_blank" class="tool-card">
+                        <img src="images/Aminer.svg" alt="Aminer" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">Aminer<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">清华推出的学术论文推荐与分析平台，帮助用户发现相关研究。</div>
+                        </div>
+                    </a>
                     <a href="https://consensus.app/" target="_blank" class="tool-card">
                         <img src="images/Consensus.png" alt="Consensus" loading="lazy">
                         <div class="tool-info">
@@ -2043,42 +2172,25 @@
             <section class="tools-section" id="writing">
                 <a href="#" class="section-title" target="_blank">AI写作工具</a>
                 <div class="tools-grid">
-                    <a href="https://www.jasper.ai/" target="_blank" class="tool-card">
-                        <img src="images/jasper.svg" alt="Jasper" loading="lazy">
+                    <a href="https://xiezuocat.com/" target="_blank" class="tool-card">
+                        <img src="images/mitaai.jpg" alt="秘塔写作猫" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Jasper<span class="mini-badge badge-paid">付费</span></div>
-                            <div class="tool-desc">面向营销与内容创作的写作助手，提供模板与长文本生成功能。</div>
-                        </div>
-                    </a>
-
-                    <a href="https://www.copy.ai/" target="_blank" class="tool-card">
-                        <img src="images/copyai.svg" alt="Copy.ai" loading="lazy">
-                        <div class="tool-info">
-                            <div class="tool-name">Copy.ai<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-name">秘塔写作猫<span class="mini-badge badge-free">免费</span></div>
                             <div class="tool-desc">专注广告文案与短内容生成的 AI 工具，适合电商与营销场景。</div>
                         </div>
                     </a>
 
-                    <a href="https://writesonic.com/" target="_blank" class="tool-card">
-                        <img src="images/writesonic.svg" alt="Writesonic" loading="lazy">
+                    <a href="https://youdao.com/writing" target="_blank" class="tool-card">
+                        <img src="images/youdao.svg" alt="有道写作" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">Writesonic<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-name">有道写作<span class="mini-badge badge-freemium">免费+</span></div>
                             <div class="tool-desc">支持博客、着陆页、广告等多种内容生成，集成 SEO 辅助。</div>
                         </div>
                     </a>
-
-                    <a href="https://www.shortlyai.com/" target="_blank" class="tool-card">
-                        <img src="images/shortlyai.svg" alt="ShortlyAI" loading="lazy">
+                    <a href="https://writer.baidu.com/" target="_blank" class="tool-card">
+                        <img src="images/baidu.svg" alt="百度作家平台" loading="lazy">
                         <div class="tool-info">
-                            <div class="tool-name">ShortlyAI<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">专注于长文写作与续写，适合小说与长篇文章的创作辅助。</div>
-                        </div>
-                    </a>
-
-                    <a href="https://www.sudowrite.com/" target="_blank" class="tool-card">
-                        <img src="images/sudowrite.svg" alt="Sudowrite" loading="lazy">
-                        <div class="tool-info">
-                            <div class="tool-name">Sudowrite<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-name">百度作家平台<span class="mini-badge badge-free">免费</span></div>
                             <div class="tool-desc">为小说作者设计的创意写作工具，提供灵感、情节生成与润色。</div>
                         </div>
                     </a>
@@ -2088,6 +2200,13 @@
                         <div class="tool-info">
                             <div class="tool-name">Grammarly<span class="mini-badge badge-freemium">免费+</span></div>
                             <div class="tool-desc">语法检查与写作风格建议工具，适合提升文本质量与可读性。</div>
+                        </div>
+                    </a>
+                    <a href="https://ibiling.cn/novel-workbench" target="_blank" class="tool-card">
+                        <img src="images/biling.svg" alt="笔灵AI小说" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">笔灵AI小说<span class="mini-badge badge-freemium">免费+</span></div>
+                            <div class="tool-desc">为小说作者设计的AI创意写作工具，提供灵感、情节生成与润色功能。</div>
                         </div>
                     </a>
                 </div>
@@ -2191,7 +2310,6 @@
             </div>
             <div class="copyright">
                 Copyright © 2025 AI导航罗盘
-                <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener">鲁ICP</a>
             </div>
         </div>
     </footer>
@@ -2607,6 +2725,7 @@ async function loadRealTimeNews() {
     }
 }
 </script>
+
 </body>
 
 </html>
