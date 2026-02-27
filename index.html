@@ -114,20 +114,16 @@
 }
         /* ========== 1. 顶部全局导航栏 ========== */
         .global-navbar {
-            width: 100%;
-            height: 56px;
-            /* 更细的顶部栏 */
-            background: var(--navbar-bg);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            border-bottom: none;
-            /* 去掉边框 */
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: none;
-            /* 去掉阴影，融入页面 */
-        }
+    width: 100%;
+    height: 72px; /* 增加高度到 72px，让整体更从容 */
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: saturate(180%) blur(20px); /* 增加饱和度提升通透感 */
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04); /* 更淡的边框 */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
         .nav-news-btn {
     /* 关键：垂直居中 + 调整间距 */
     display: inline-flex;
@@ -148,21 +144,12 @@
     flex-shrink: 0;
 }
 
-.nav-news-btn i {
-    color: #ff4d4f; /* 火焰图标红色突出 */
-    font-size: 0.9rem;
-}
-
-.nav-news-btn:hover {
-    background: #f0f0f0;
-    transform: translateY(-1px);
-}
 
 /* 移动端适配（优化）：屏幕变小时先缩小文字，再隐藏 */
-@media (max-width: 768px) {
-    .nav-news-btn span {
-        font-size: 0.75rem; /* 先缩小文字 */
-    }
+    @media (max-width: 768px) {
+        .nav-news-btn span {
+            font-size: 0.75rem; /* 先缩小文字 */
+        }
     /* 屏幕更小时（如小于480px）再隐藏文字 */
     @media (max-width: 480px) {
         .nav-news-btn span {
@@ -175,61 +162,43 @@
     }
 }
         .nav-container {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 0 20px;
-            height: 100%;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
+            max-width: 1320px; /* 稍微拓宽，更现代 */
+    margin: 0 auto;
+    padding: 0 40px; /* 增加左右内边距 */
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
         }
         .right-actions {
             margin-left: auto; 
         }
         /* AI热门资讯按钮样式 */
-.nav-news-btn {
-    margin-left: 15px; /* 与Logo保持间距 */
-    background: #ffffff;
-    color: #000000;
-    padding: 6px 12px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease;
-}
-/* 新增：常用工具按钮样式 */
-.nav-freq-btn {
+.nav-news-btn, .nav-freq-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 36px;
-    margin-left: 15px;
-    padding: 0 12px;
-    background: #ffffff;
-    color: #000000;
-    border-radius: 8px;
+    height: 38px;
+    padding: 0 16px;
+    margin: 0 8px;
+    background: transparent; /* 默认透明，更高级 */
+    color: #1d1d1f; /* 接近苹果的文字色 */
+    border-radius: 10px;
     text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 1.0rem; /* 稍微加大，但减弱字重 */
+    font-weight: 600;   
+    letter-spacing: 0.3px; /* 增加一点字间距 */
     gap: 6px;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     flex-shrink: 0;
 }
 
-.nav-freq-btn i {
-    color: #f59e0b; /* 橙黄色的星星，区别于热门的红色 */
-    font-size: 0.9rem;
-}
 
-.nav-freq-btn:hover {
-    background: #f0f0f0;
+.nav-news-btn:hover, .nav-freq-btn:hover {
+    background: rgba(0, 0, 0, 0.04); /* 极淡的灰背景 */
+    color: var(--primary-color);
     transform: translateY(-1px);
 }
-
 /* 移动端适配：屏幕变小隐藏文字，只留图标 */
 @media (max-width: 768px) {
     .nav-freq-btn span {
@@ -240,17 +209,6 @@
         margin-left: 8px;
     }
 }
-
-.nav-news-btn i {
-    color: #ff4d4f; /* 火焰图标给个红色，突出“热门” */
-    font-size: 1.1rem;
-}
-
-.nav-news-btn:hover {
-    background: #f0f0f0;
-    transform: translateY(-1px);
-}
-
 /* 移动端适配：手机上如果太挤，可以隐藏文字只留图标 */
 @media (max-width: 768px) {
     .nav-news-btn span {
@@ -261,21 +219,6 @@
         margin-left: 8px;
     }
 }
-
-        .logo {
-            font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-
-        .logo i {
-            font-size: 1.4rem;
-        }
-
         .right-actions {
             display: flex;
             gap: 8px;
@@ -283,14 +226,13 @@
             align-items: center;
             height: 100%;
         }
-
         .icon-btn {
             width: 36px;
             height: 36px;
             border-radius: 8px;
             border: none;
             background: var(--tag-bg);
-            color: var(--primary-color);
+            color: black;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -299,16 +241,11 @@
             font-size: 1rem;
             box-shadow: none;
         }
-
         .icon-btn:hover {
-            background: #f3f4f6;
             color: var(--primary-color);
-            transform: translateY(-1px);
-            box-shadow: none;
+    background: transparent;
         }
-
         /* ========== 下拉菜单核心修复与优化 ========== */
-
         .dropdown-wrapper {
             position: relative;
             height: 100%;
@@ -316,7 +253,6 @@
             align-items: center;
             cursor: pointer;
         }
-
         .dropdown-menu {
             position: absolute;
             top: 60px;
@@ -334,7 +270,6 @@
             overflow: visible;
             padding: 6px 0;
         }
-
         .dropdown-menu::before {
             content: '';
             position: absolute;
@@ -438,15 +373,7 @@
             margin: 8px 0;
         }
 
-        .logout-item {
-            color: #ef4444;
-        }
-
-        .logout-item:hover {
-            background: #fef2f2;
-            color: #dc2626;
-            border-left-color: #dc2626;
-        }
+        
 
         .dark-mode .logout-item:hover {
             background: rgba(220, 38, 38, 0.1);
@@ -524,58 +451,33 @@
             height: auto;
             line-height: 1;
         }
-
-        .global-navbar .auth-btn:hover,
-        .global-navbar .login-btn:hover,
-        .global-navbar .register-btn:hover {
-            background: #f6f7f8;
-            color: #000000 !important;
-            transform: translateY(-1px);
-            box-shadow: none;
-        }
-
         /* 缩小 Sign in 与 Sign up 之间的间距（在现有 gap 基础上减少约 4px） */
         .global-navbar .login-btn {
             margin-right: -4px;
         }
 
-
         /* ========== 2. 头部区域（简洁） ========== */
         header {
-            position: relative;
-            color: var(--text-color);
+            padding-top: 72px;
+            padding: 50px 20px 15px;
             text-align: center;
-            /* reduced vertical padding since subtitle/links gone */
-            padding: -20px 20px 40px;
-            margin-bottom: 0px;
-            overflow: hidden;
         }
-
-        
         header h1 {
-    font-size: 3.5rem;
+    font-size: 3.8rem;
     font-weight: 900;
-    margin-bottom: 12px;
     letter-spacing: -2px;
-    
-    /* 修改这里：不再使用透明裁剪，直接引用主色变量 */
-    color: var(--primary-color); 
-    background: var(--bg-color);
-
-    -webkit-background-clip: initial !important;
-    -webkit-text-fill-color: initial !important;
+    line-height: 1.1;
+     background: linear-gradient(
+        90deg,
+        #111827 0%,
+        #1f2937 40%,
+        #374151 100%
+    );
+    margin-bottom: 12px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
-        /* 副标题样式 */
-        .header-subtitle {
-            font-size: 1.25rem;
-            font-weight: 400;
-            color: var(--text-color); /* 或者直接用 #64748b */
-            opacity: 0.8;
-            max-width: 700px;
-            margin: 15px auto 35px; /* 上边距15px，下边距35px */
-            line-height: 1.6;
-            letter-spacing: 0.5px;
-        }
+
     /* 适配移动端：屏幕变小时调小字号 */
         @media (max-width: 768px) {
             .header-subtitle {
@@ -590,45 +492,43 @@
             text-shadow: none;
         }
 
-        .subtitle {
-            font-size: 1.125rem;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 36px;
-            position: relative;
-            z-index: 1;
-            font-weight: 500;
-            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-        }
+        .header-subtitle {
+    font-size: 1.2rem;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto;
+    /* --- 核心修改：加大 h2 到搜索框的间距 --- */
+    /* 从原来的 20px 增加到 40px，让视觉重心更平稳 */
+    margin-bottom: 20px; 
+    line-height: 1.6;
+    opacity: 0.85;
+}
 
         .modern-search-wrapper {
             position: relative;
-            max-width: 700px;
-            margin: 0 auto 10px;
+            max-width: 720px;
+            margin: 0 auto 30px;
             z-index: 2;
         }
-
-
         .modern-search-form {
             position: relative;
             display: flex;
             align-items: center;
+            padding: 8px 8px 8px 18px;
             width: 100%;
-            background: var(--card-bg);
-            border-radius: 14px;
-            padding: 10px 6px 10px 12px;
-            box-shadow: 
-                    0 10px 25px -5px rgba(0, 0, 0, 0.05),
-                    0 8px 10px -6px rgba(0, 0, 0, 0.05),
-                    inset 0 0 20px rgba(255, 255, 255, 0.5);
-            border: 1px solid #cbd5e1;
-            transition: all 0.18s ease;
+            background: #fff;
+            border-radius: 50px;
+            padding: 12px 8px 12px 18px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04); 
+            border: 1px solid rgba(0, 0, 0, 0.05); 
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
         .modern-search-form:hover,
         .modern-search-form:focus-within {
-        transform: translateY(-2px); /* 浮起感 */
-    box-shadow: 0 20px 25px -5px rgba(71, 11, 18, 0.1);
-    border: 1px solid var(--primary-color);
-}
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--primary-color);
+        }
 
         /* 搜索下方的对话 AI 条 */
         .chat-item {
@@ -696,7 +596,7 @@
             background: whitesmoke;
             color: black;
             border: none;
-            border-radius: 10px;
+            border-radius: 30px;
             padding: 10px 18px;
             font-size: 0.98rem;
             font-weight: 700;
@@ -924,7 +824,7 @@
             gap: 5px;
             max-width: 900px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 10px;
         }
 
         .footer-section h3 {
@@ -955,8 +855,8 @@
 
         .copyright {
             text-align: center;
-            margin-top: 20px;
-            padding-top: 15px;
+            margin-top: 10px;
+            padding-top: 10px;
             border-top: 1px solid var(--card-border);
             color: var(--desc-text-color);
             font-size: 0.9rem;
@@ -1211,16 +1111,10 @@
 <body>
     <nav class="global-navbar">
         <div class="nav-container">
-            <a href="#" class="logo">
-                <i class="fas fa-compass"></i>
-                <span>精选AI工具</span>
-            </a>
             <button class="nav-freq-btn" id="openFreqTools" style="border: none; cursor: pointer;">
-                <i class="fas fa-star"></i>
                 <span>常用工具</span>
             </button>
             <button class="nav-news-btn" style="border: none; cursor: pointer;">
-                <i class="fas fa-fire"></i>
                 <span>AI热门资讯</span>
             </button>
 
@@ -1503,7 +1397,7 @@
             <div class="modern-search-wrapper">
                 <form action="#" method="get" class="modern-search-form">
                     <i class="fas fa-search search-icon-left"></i>
-                    <input type="text" class="modern-search-input" id="" name="q" placeholder="搜索AI工具，例如：Midjourney..."
+                    <input type="text" class="modern-search-input" id="" name="q" placeholder="搜索AI工具：ChatGPT..."
                         aria-label="搜索AI工具">
                     <button type="submit" class="modern-search-btn">
                         <i class="fas fa-arrow-right"></i>
@@ -1623,21 +1517,21 @@
                         <img src="images/Pixverse.svg" alt="pixverse" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">PixVerse<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">爱诗科技推出的AI 视频生成平台</div>
+                            <div class="tool-desc">爱诗科技推出的AI视频生成平台</div>
                         </div>
                     </a>
                     <a href="https://www.vidu.cn/" target="_blank" class="tool-card">
                         <img src="images/Vidu.svg" alt="vidu" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">Vidu<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">Vidu是基于AI的视频生成平台，支持多种视频创作功能</div>
+                            <div class="tool-desc">Vidu支持多种视频创作功能</div>
                         </div>
                     </a>
                     <a href="https://hailuoai.com/" target="_blank" class="tool-card">
                         <img src="images/hailuo.webp" alt="海螺AI" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">海螺AI<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">MiniMax 旗下多模态全能选手</div>
+                            <div class="tool-desc">MiniMax旗下多模态全能选手</div>
                         </div>
                     </a>
                     <a href="https://chatglm.cn/main/alltoolsdetail?lang=zh" target="_blank" class="tool-card">
@@ -1974,7 +1868,7 @@
                         </div>
                     </a>
                     <a href="https://tongyi.aliyun.com/lingma" target="_blank" class="tool-card">
-                        <img src="images/tongyilingma.jpg" alt="通义灵码" loading="lazy">
+                        <img src="images/tongyi.svg" alt="通义灵码" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">通义灵码<span class="mini-badge badge-free">免费</span></div>
                             <div class="tool-desc">企业级合规首选，阿里云生态无缝对接</div>
@@ -2188,7 +2082,7 @@
                         <img src="images/baidu.svg" alt="百度作家平台" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">百度作家平台<span class="mini-badge badge-free">免费</span></div>
-                            <div class="tool-desc">为小说作者设计的创意写作工具，提供灵感、情节生成与润色。</div>
+                            <div class="tool-desc">为小说作者设计的创意写作工具，提供灵感、情节生成与润色</div>
                         </div>
                     </a>
 
@@ -2196,14 +2090,21 @@
                         <img src="images/grammarly.svg" alt="Grammarly" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">Grammarly<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">语法检查与写作风格建议工具，适合提升文本质量与可读性。</div>
+                            <div class="tool-desc">语法检查与写作风格建议工具，适合提升文本质量与可读性</div>
                         </div>
                     </a>
                     <a href="https://ibiling.cn/novel-workbench" target="_blank" class="tool-card">
                         <img src="images/biling.svg" alt="笔灵AI小说" loading="lazy">
                         <div class="tool-info">
                             <div class="tool-name">笔灵AI小说<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">为小说作者设计的AI创意写作工具，提供灵感、情节生成与润色功能。</div>
+                            <div class="tool-desc">为小说作者设计的AI创意写作工具，提供灵感、情节生成与润色功能</div>
+                        </div>
+                    </a>
+                    <a href="https://www.doubao.com/chat/?channel=w3c&source=hw_db_w3c&type=ziy&theme=bianc" target="_blank" class="tool-card">
+                        <img src="images/huoshan.svg" alt="火山写作" loading="lazy">
+                        <div class="tool-info">
+                            <div class="tool-name">火山写作<span class="mini-badge badge-free">免费</span></div>
+                            <div class="tool-desc">火山写作是字节跳动基于AI开发的创意写作工具</div>
                         </div>
                     </a>
                 </div>
@@ -2249,14 +2150,6 @@
                         <div class="tool-info">
                             <div class="tool-name">HuggingChat Agents<span class="mini-badge badge-free">免费</span></div>
                             <div class="tool-desc">Hugging Face 提供的对话与 agent 实验环境，适合探索模型能力。</div>
-                        </div>
-                    </a>
-
-                    <a href="#" target="_blank" class="tool-card">
-                        <img src="images/mcp.svg" alt="Custom MCP" loading="lazy">
-                        <div class="tool-info">
-                            <div class="tool-name">自定义 Agent（MCP）<span class="mini-badge badge-freemium">免费+</span></div>
-                            <div class="tool-desc">基于 MCP 或自托管服务搭建的自定义代理，可接入团队知识库与流程。</div>
                         </div>
                     </a>
                 </div>
