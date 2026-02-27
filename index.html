@@ -174,7 +174,7 @@
             margin-left: auto; 
         }
         /* AI热门资讯按钮样式 */
-.nav-news-btn, .nav-freq-btn {
+.nav-news-btn, .nav-freq-btn ,.nav-hot {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -185,7 +185,7 @@
     color: #1d1d1f; /* 接近苹果的文字色 */
     border-radius: 10px;
     text-decoration: none;
-    font-size: 1.0rem; /* 稍微加大，但减弱字重 */
+    font-size: 1.1rem; /* 稍微加大，但减弱字重 */
     font-weight: 600;   
     letter-spacing: 0.3px; /* 增加一点字间距 */
     gap: 6px;
@@ -194,7 +194,7 @@
 }
 
 
-.nav-news-btn:hover, .nav-freq-btn:hover {
+.nav-news-btn:hover, .nav-freq-btn:hover, .nav-hot:hover {
     background: rgba(0, 0, 0, 0.04); /* 极淡的灰背景 */
     color: var(--primary-color);
     transform: translateY(-1px);
@@ -856,7 +856,7 @@
         .copyright {
             text-align: center;
             margin-top: 10px;
-            padding-top: 10px;
+            padding-top: 1px;
             border-top: 1px solid var(--card-border);
             color: var(--desc-text-color);
             font-size: 0.9rem;
@@ -1111,13 +1111,15 @@
 <body>
     <nav class="global-navbar">
         <div class="nav-container">
-            <button class="nav-freq-btn" id="openFreqTools" style="border: none; cursor: pointer;">
-                <span>常用工具</span>
-            </button>
             <button class="nav-news-btn" style="border: none; cursor: pointer;">
-                <span>AI热门资讯</span>
+                <span>AI资讯</span>
             </button>
-
+            <button class="nav-hot" style="border: none; cursor: pointer;">
+                <span>工具热榜</span>
+            </button>
+            <!--<button class="nav-freq-btn" id="openFreqTools" style="border: none; cursor: pointer;">
+                <span>常用工具</span>
+            </button>-->
             <div class="right-actions">
                <!---<button id="openLogin" class="auth-btn login-btn" style="border: none; cursor: pointer;">Sign
                     in</button>
