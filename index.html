@@ -36,9 +36,6 @@
             --search-box-focus-shadow:none;
         }
         /* --- 插入开始：侧边栏核心布局 --- */
-
-/* --- 插入结束 --- */
-        /* 深色模式颜色优化 */
 .dark-mode {
     --bg-color: #0f172a;        /* 深蓝灰背景，比纯黑更高级 */
     --text-color: #f1f5f9;      /* 浅灰色文字 */
@@ -51,7 +48,6 @@
     --desc-text-color: #94a3b8; /* 描述文字使用中灰色 */
     --tag-bg: #334155;
 }
-
         /* 全局重置样式 */
         * {
             margin: 0;
@@ -59,7 +55,6 @@
             box-sizing: border-box;
             scroll-behavior: smooth;
         }
-
         /* dialog 弹窗全局样式：新增 */
         dialog {
             margin: auto;
@@ -67,16 +62,13 @@
             border: none;
             outline: none;
         }
-
         dialog::backdrop {
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
         }
-
         .dark-mode dialog::backdrop {
             background: rgba(0, 0, 0, 0.7);
         }
-
         /* 修复输入框聚焦样式 */
         input:focus {
             border-color: var(--primary-color) !important;
@@ -144,8 +136,6 @@
     /* 确保按钮不被挤压 */
     flex-shrink: 0;
 }
-
-
 /* 移动端适配（优化）：屏幕变小时先缩小文字，再隐藏 */
     @media (max-width: 768px) {
         .nav-news-btn span {
@@ -193,8 +183,6 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     flex-shrink: 0;
 }
-
-
 .nav-news-btn:hover, .nav-freq-btn:hover, .nav-hot:hover {
     background: rgba(0, 0, 0, 0.04); /* 极淡的灰背景 */
     color: var(--primary-color);
@@ -1104,6 +1092,11 @@
             color: #ccc;
         }
     </style>
+    <script async src="https://plausible.io/js/pa-KntC2F9EpRGylUgOXBG0A.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
 </head>
 
 <!-- 网站访客统计脚本：使用 defer 防止阻塞渲染 -->
